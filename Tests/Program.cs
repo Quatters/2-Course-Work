@@ -1,9 +1,11 @@
 ﻿using System;
 using RB_Tree;
+using OA_Hashtable;
+using DoubleLinkedList;
 
 namespace Tests
 {
-    class Program
+    class Tests
     {
         static void RB_Tree_test()
         {
@@ -75,7 +77,8 @@ namespace Tests
         }
         static void Main(string[] args)
         {
-            RB_Tree_test();
+            OA_Hashtable<string> hashtable = new OA_Hashtable<string>();
+            hashtable.Add(1);
         }
     }
 }

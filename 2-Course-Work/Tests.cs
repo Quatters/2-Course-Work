@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace _2_Course_Work
 {
-    static class Program
+    static class Tests
     {
         /// <summary>
         /// Главная точка входа для приложения.

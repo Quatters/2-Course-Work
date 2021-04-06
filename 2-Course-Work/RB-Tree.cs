@@ -1,20 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Misc.Misc;
 
 namespace RB_Tree
 {
-    static class Misc
-    {
-        public static void Swap<T>(ref T a, ref T b)
-        {
-            T temp = a;
-            a = b;
-            b = temp;
-        }
-    }
     public class RB_Tree<T> where T : IComparable
     {
         public class Node
@@ -112,7 +100,7 @@ namespace RB_Tree
                             parent = ptr.parent;
                         }
                         Rotate(grand, Direction.RIGHT);
-                        Misc.Swap(ref parent.color, ref grand.color);
+                        Swap(ref parent.color, ref grand.color);
                         ptr = parent;
                     }
                 }
@@ -135,7 +123,7 @@ namespace RB_Tree
                             parent = ptr.parent;
                         }
                         Rotate(grand, Direction.LEFT);
-                        Misc.Swap(ref parent.color, ref grand.color);
+                        Swap(ref parent.color, ref grand.color);
                         ptr = parent;
                     }
                 }
@@ -184,7 +172,7 @@ namespace RB_Tree
                 }
                 return;
             }
-            Misc.Swap(ref u.key, ref v.key);
+            Swap(ref u.key, ref v.key);
             Remove(u);
         }
         private void FixDoubleBlack(Node x)
@@ -334,10 +322,7 @@ namespace RB_Tree
             }
             Remove(ptr);
         }
-        public void Clear()
-        {
-            while (root != null) Remove(root);
-        }
+        public void Clear() => root = null;
         // следующие методы необходимы только для теста в консоли
         public void Draw() { Draw(root, 0); }
         private void Draw(Node ptr, int n)
