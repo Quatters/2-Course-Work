@@ -1,122 +1,124 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace DoubleLinkedList
 {
-    public class DoubleLinkedList<T>
+    public class DoubleLinkedListNode<T>
     {
-        private Node head = null;
-        private Node tail = null;
-        public int Size { get; private set; } = 0;
-        public class Node
+        public T Key { get; internal set; }
+        public DoubleLinkedListNode<T> Next { get; internal set; }
+        public DoubleLinkedListNode<T> Prev { get; internal set; }
+        internal DoubleLinkedListNode(T key, DoubleLinkedListNode<T> next = null, DoubleLinkedListNode<T> prev = null)
         {
-            public Node next;
-            public Node prev;
-            public T key;
-            public Node(T key, Node next = null, Node prev = null)
-            {
-                this.key = key;
-                this.next = next;
-                this.prev = prev;
-            }
-        }
+            Key = key;
+            Next = next;
+            Prev = prev;
+        }        
+    }
+    public class DoubleLinkedList<T> : IEnumerable<DoubleLinkedListNode<T>>
+    {
+        public DoubleLinkedListNode<T> First { get; private set; } = null;
+        public DoubleLinkedListNode<T> Last { get; private set; } = null;
+        public int Size { get; private set; } = 0;
         public void AddFirst(T key)
         {
-            if (head == null)
+            if (First == null)
             {
-                head = new Node(key);
-                tail = head;
+                First = new DoubleLinkedListNode<T>(key);
+                Last = First;
             }
             else
             {
-                head.prev = new Node(key, head);
-                head = head.prev;
+                First.Prev = new DoubleLinkedListNode<T>(key, First);
+                First = First.Prev;
             }
             Size++;
         }
         public void AddLast(T key)
         {
-            if (head == null)
+            if (First == null)
             {
-                head = new Node(key);
-                tail = head;
+                First = new DoubleLinkedListNode<T>(key);
+                Last = First;
             }
             else
             {
-                tail.next = new Node(key, null, tail);
-                tail = tail.next;
+                Last.Next = new DoubleLinkedListNode<T>(key, null, Last);
+                Last = Last.Next;
             }
             Size++;
         }
         public bool Contains(T key)
         {
-            if (head == null) return false;
-            Node ptr = head;
+            if (First == null) return false;
+            DoubleLinkedListNode<T> ptr = First;
             do
             {
-                if (ptr.key.Equals(key)) return true;
-                ptr = ptr.next;
+                if (ptr.Key.Equals(key)) return true;
+                ptr = ptr.Next;
             } while (ptr != null);
             return false;
         }
         public void Remove(T key)
         {
-            Node node = GetNode(key);
+            DoubleLinkedListNode<T> node = GetNode(key);
             if (node == null) return;
-            if (node.prev == null) // первый
+            if (node.Prev == null) // первый
             {
-                if (node.next == null) // единственный
+                if (node.Next == null) // единственный
                 {
-                    head = null;
+                    First = null;
                 }
                 else
                 {
-                    head = head.next;
-                    head.prev = null;
+                    First = First.Next;
+                    First.Prev = null;
                 }
             }
-            else if (node.next == null) // последний
+            else if (node.Next == null) // последний
             {
-                tail = tail.prev;
-                tail.next = null;
+                Last = Last.Prev;
+                Last.Next = null;
             }
             else
             {
-                node.prev.next = node.next;
-                node.next.prev = node.prev;
+                node.Prev.Next = node.Next;
+                node.Next.Prev = node.Prev;
             }
             Size--;
         }
         public void Clear()
         {
-            head = tail = null;
+            First = Last = null;
         }
-        private Node GetNode(T key)
+        public DoubleLinkedListNode<T> GetNode(T key)
         {
-            if (head == null) return null;
-            Node ptr = head;
+            if (First == null) return null;
+            DoubleLinkedListNode<T> ptr = First;
             do
             {
-                if (ptr.key.Equals(key)) return ptr;
-                ptr = ptr.next;
+                if (ptr.Key.Equals(key)) return ptr;
+                ptr = ptr.Next;
             } while (ptr != null);
             return null;
         }
         
-        // следующие методы необходимы только для теста в консоли
-        public void Print()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            if (head == null) return;
-            if (head == tail)
-            {
-                Console.Write($"{head.key} ");
-                return;
+            DoubleLinkedListNode<T> ptr = First;
+            while (ptr != null) {
+                yield return ptr.Key;
+                ptr = ptr.Next;
             }
-            Node ptr = head;
-            do
+        }
+        IEnumerator<DoubleLinkedListNode<T>> IEnumerable<DoubleLinkedListNode<T>>.GetEnumerator()
+        {
+            DoubleLinkedListNode<T> ptr = First;
+            while (ptr != null)
             {
-                Console.Write($"{ptr.key} ");
-                ptr = ptr.next;
-            } while (ptr != null);
+                yield return ptr;
+                ptr = ptr.Next;
+            }
         }
     }
 }

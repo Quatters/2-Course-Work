@@ -1,18 +1,20 @@
 ﻿using System;
 using static Misc.Misc;
+using DoubleLinkedList;
 
 namespace RB_Tree
 {
-    public class RB_Tree<T> where T : IComparable
+    public class RB_Tree<TKey, TValue> where TKey : IComparable 
     {
-        public class Node
+        internal class Node
         {
-            public enum Color { BLACK, RED };
-            public T key;
-            public Node left, right, parent;
-            public Color color;
-            public int count;
-            public Node(T key)
+            internal enum Color { BLACK, RED };
+            internal TKey key;
+            internal Node left, right, parent;
+            internal Color color;
+            internal int count;
+            internal DoubleLinkedList<TValue> list = new DoubleLinkedList<TValue>();
+            internal Node(TKey key, TValue value)
             {
                 this.key = key;
                 color = Color.RED;
@@ -20,21 +22,23 @@ namespace RB_Tree
                 right = null;
                 parent = null;
                 count = 1;
+                list.AddLast(value);
             }
-            public Node Brother()
+            internal Node Brother()
             {
                 if (parent == null) return null;
                 if (this == parent.left) return parent.right;
                 return parent.left;
             }
-            public bool isOnLeft() { return this == parent.left; }
-            public bool hasRedChild()
+            internal bool isOnLeft() { return this == parent.left; }
+            internal bool hasRedChild()
             {
                 return (left != null && left.color == Color.RED) ||
                     (right != null && right.color == Color.RED);
             }
+
             // следующие методы необходимы только для теста в консоли
-            public void Print()
+            internal void Print()
             {
                 if (this != null)
                 {
@@ -42,7 +46,7 @@ namespace RB_Tree
                 }
             }
         }
-        private Node root;
+        private Node root = null;
         private enum Direction { LEFT, RIGHT };
         private void Rotate(Node ptr, Direction dir)
         {
@@ -249,25 +253,25 @@ namespace RB_Tree
             while (temp.right != null) temp = temp.right;
             return temp;
         }
-        public RB_Tree() { root = null; }
-        public void Add(T key)
+        public void Add(TKey key, TValue value)
         {
             if (root == null)
             {
-                root = new Node(key);
+                root = new Node(key, value);
                 root.left = null;
                 root.right = null;
                 root.color = Node.Color.BLACK;
                 return;
             }
             Node p = root;
-            Node elem = new Node(key);
+            Node elem = new Node(key, value);
             bool added = false;
             while (!added)
             {
                 if (elem.key.Equals(p.key))
                 {
                     p.count++;
+                    if (!p.list.Contains(value)) p.list.AddLast(value);
                     added = true;
                 }
                 else if (elem.key.CompareTo(p.key) == -1)
@@ -298,7 +302,7 @@ namespace RB_Tree
                 }
             }
         }
-        public Node Find(T key)
+        private Node Find(TKey key)
         {
             if (root == null) return null;
             Node ptr = root;
@@ -310,7 +314,8 @@ namespace RB_Tree
             }
             return null;
         }
-        public void Remove(T key)
+        public bool Contains(TKey key) => Find(key) == null;
+        public void Remove(TKey key)
         {
             if (root == null) return;
             Node ptr = Find(key);
@@ -323,8 +328,19 @@ namespace RB_Tree
             Remove(ptr);
         }
         public void Clear() => root = null;
+        public DoubleLinkedList<TValue> GetValues(TKey key)
+        {
+            Node node = Find(key);
+            if (node != null) return node.list;
+            else
+            {
+                DoubleLinkedList<TValue> list = new DoubleLinkedList<TValue>();
+                return list;
+            }
+        }
+
         // следующие методы необходимы только для теста в консоли
-        public void Draw() { Draw(root, 0); }
+        public void Draw() => Draw(root, 0);
         private void Draw(Node ptr, int n)
         {
             if (ptr != null)
@@ -338,7 +354,7 @@ namespace RB_Tree
                 Draw(ptr.left, n + 1);
             }
         }
-        public void PrintInOrder() { PrintInOrder(root); }
+        public void PrintInOrder() => PrintInOrder(root);
         private void PrintInOrder(Node ptr)
         {
             if (ptr == null) return;

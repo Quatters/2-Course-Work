@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using DoubleLinkedList;
+using RB_Tree;
+
 namespace _2_Course_Work
 {
     public partial class MainForm : Form
@@ -15,6 +18,16 @@ namespace _2_Course_Work
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
