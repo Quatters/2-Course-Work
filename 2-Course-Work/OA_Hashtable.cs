@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
+// для защиты приготовить таблицу с ASCII-кодами
 namespace OA_Hashtable
 {
     public class Pair<TKey, TValue>
     {
         public TKey Key { get; }
-        public TValue Value { get; }
-        public bool Deleted { get; internal set; }
+        public TValue Value { get; set; }
+        internal bool Deleted { get; set; }
         public Pair(TKey key, TValue value)
         {
             Key = key;
@@ -35,10 +36,16 @@ namespace OA_Hashtable
             }
             return hashtable[hash] != null ? hash : -1;
         }
+        public bool Contains(TKey key) => GetIndex(key) != -1;
         public TValue GetValue(TKey key)
         {
             int index = GetIndex(key);
             return index != -1 ? hashtable[index].Value : default;
+        }
+        public Pair<TKey, TValue> GetPair(TKey key)
+        {
+            int index = GetIndex(key);
+            return index != -1 ? hashtable[index] : null;
         }
         public void Delete(Pair<TKey, TValue> pair)
         {

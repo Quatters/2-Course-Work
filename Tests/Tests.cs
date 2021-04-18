@@ -115,7 +115,10 @@ namespace Tests
         }
         static void Main(string[] args)
         {
-
+            OA_Hashtable<string, string> table = new OA_Hashtable<string, string>();
+            table.Add("1", "1");
+            table.GetPair("1").Value = "2";
+            foreach (var item in table) Console.WriteLine(item.Value);
         }
     }
 }
