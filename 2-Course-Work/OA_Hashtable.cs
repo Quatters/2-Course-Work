@@ -25,6 +25,12 @@ namespace OA_Hashtable
         private int size = DEFAULT_SIZE;
         private int stored = 0;
         public double Fullness => (double)stored / size;
+        public void Clear()
+        {
+            size = DEFAULT_SIZE;
+            stored = 0;
+            hashtable = new Pair<TKey, TValue>[DEFAULT_SIZE];    
+        }
         private int GetIndex(TKey key)
         {
             int i = 0;
@@ -34,7 +40,7 @@ namespace OA_Hashtable
                 i++;
                 hash = Hash(key, i);
             }
-            return hashtable[hash] != null ? hash : -1;
+            return hashtable[hash] != null && !hashtable[hash].Deleted ? hash : -1;
         }
         public bool Contains(TKey key) => GetIndex(key) != -1;
         public TValue GetValue(TKey key)

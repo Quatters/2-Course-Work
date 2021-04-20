@@ -31,6 +31,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.MainPage = new System.Windows.Forms.TabPage();
             this.MainTable = new System.Windows.Forms.DataGridView();
@@ -41,6 +42,8 @@
             this.Publisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NameGenrePage = new System.Windows.Forms.TabPage();
             this.NameGenreTable = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.Add_button = new System.Windows.Forms.Button();
             this.Delete_button = new System.Windows.Forms.Button();
@@ -48,8 +51,6 @@
             this.Save_button = new System.Windows.Forms.Button();
             this.Load_button = new System.Windows.Forms.Button();
             this.CurStateInfo = new System.Windows.Forms.RichTextBox();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl.SuspendLayout();
             this.MainPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainTable)).BeginInit();
@@ -78,7 +79,7 @@
             this.MainPage.Location = new System.Drawing.Point(4, 25);
             this.MainPage.Name = "MainPage";
             this.MainPage.Padding = new System.Windows.Forms.Padding(3);
-            this.MainPage.Size = new System.Drawing.Size(743, 415);
+            this.MainPage.Size = new System.Drawing.Size(665, 415);
             this.MainPage.TabIndex = 0;
             this.MainPage.Text = "Структура";
             this.MainPage.UseVisualStyleBackColor = true;
@@ -115,7 +116,7 @@
             this.MainTable.RowHeadersVisible = false;
             this.MainTable.RowHeadersWidth = 51;
             this.MainTable.RowTemplate.Height = 24;
-            this.MainTable.Size = new System.Drawing.Size(731, 388);
+            this.MainTable.Size = new System.Drawing.Size(653, 403);
             this.MainTable.TabIndex = 0;
             // 
             // BookName
@@ -178,7 +179,7 @@
             this.NameGenreTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -203,11 +204,25 @@
             this.NameGenreTable.Size = new System.Drawing.Size(653, 403);
             this.NameGenreTable.TabIndex = 1;
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Название";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Жанр";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
             // tabPage3
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(743, 415);
+            this.tabPage3.Size = new System.Drawing.Size(665, 415);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Справочник Полины";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -257,6 +272,7 @@
             this.Save_button.TabStop = false;
             this.Save_button.Text = "Сохранить...";
             this.Save_button.UseVisualStyleBackColor = true;
+            this.Save_button.Click += new System.EventHandler(this.Save_button_Click);
             // 
             // Load_button
             // 
@@ -268,6 +284,7 @@
             this.Load_button.TabStop = false;
             this.Load_button.Text = "Загрузить...";
             this.Load_button.UseVisualStyleBackColor = true;
+            this.Load_button.Click += new System.EventHandler(this.Load_button_Click);
             // 
             // CurStateInfo
             // 
@@ -282,20 +299,6 @@
             this.CurStateInfo.TabStop = false;
             this.CurStateInfo.Text = "";
             // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Название";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Жанр";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -308,8 +311,9 @@
             this.Controls.Add(this.Delete_button);
             this.Controls.Add(this.Add_button);
             this.Controls.Add(this.tabControl);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "Справочник библиотеки";
+            this.Text = "Библиотека";
             this.tabControl.ResumeLayout(false);
             this.MainPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainTable)).EndInit();
