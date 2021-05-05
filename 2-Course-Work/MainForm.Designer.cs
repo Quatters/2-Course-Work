@@ -34,12 +34,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.MainPage = new System.Windows.Forms.TabPage();
-            this.MainTable = new System.Windows.Forms.DataGridView();
+            this.StructureTable = new System.Windows.Forms.DataGridView();
             this.BookName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Author = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Genre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Year = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Publisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Year = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NameGenrePage = new System.Windows.Forms.TabPage();
             this.NameGenreTable = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,9 +51,10 @@
             this.Save_button = new System.Windows.Forms.Button();
             this.Load_button = new System.Windows.Forms.Button();
             this.CurStateInfo = new System.Windows.Forms.RichTextBox();
+            this.findByYears_button = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.MainPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MainTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StructureTable)).BeginInit();
             this.NameGenrePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NameGenreTable)).BeginInit();
             this.SuspendLayout();
@@ -69,55 +70,55 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(673, 444);
+            this.tabControl.Size = new System.Drawing.Size(877, 504);
             this.tabControl.TabIndex = 1;
             this.tabControl.TabStop = false;
             // 
             // MainPage
             // 
-            this.MainPage.Controls.Add(this.MainTable);
+            this.MainPage.Controls.Add(this.StructureTable);
             this.MainPage.Location = new System.Drawing.Point(4, 25);
             this.MainPage.Name = "MainPage";
             this.MainPage.Padding = new System.Windows.Forms.Padding(3);
-            this.MainPage.Size = new System.Drawing.Size(665, 415);
+            this.MainPage.Size = new System.Drawing.Size(869, 475);
             this.MainPage.TabIndex = 0;
             this.MainPage.Text = "Структура";
             this.MainPage.UseVisualStyleBackColor = true;
             // 
-            // MainTable
+            // StructureTable
             // 
-            this.MainTable.AllowUserToAddRows = false;
-            this.MainTable.AllowUserToDeleteRows = false;
-            this.MainTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.StructureTable.AllowUserToAddRows = false;
+            this.StructureTable.AllowUserToDeleteRows = false;
+            this.StructureTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.MainTable.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.MainTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.MainTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.MainTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.StructureTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.StructureTable.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.StructureTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.StructureTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.StructureTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.BookName,
             this.Author,
             this.Genre,
-            this.Year,
-            this.Publisher});
+            this.Publisher,
+            this.Year});
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.MainTable.DefaultCellStyle = dataGridViewCellStyle1;
-            this.MainTable.Location = new System.Drawing.Point(6, 6);
-            this.MainTable.MultiSelect = false;
-            this.MainTable.Name = "MainTable";
-            this.MainTable.ReadOnly = true;
-            this.MainTable.RowHeadersVisible = false;
-            this.MainTable.RowHeadersWidth = 51;
-            this.MainTable.RowTemplate.Height = 24;
-            this.MainTable.Size = new System.Drawing.Size(653, 403);
-            this.MainTable.TabIndex = 0;
+            this.StructureTable.DefaultCellStyle = dataGridViewCellStyle1;
+            this.StructureTable.Location = new System.Drawing.Point(6, 6);
+            this.StructureTable.MultiSelect = false;
+            this.StructureTable.Name = "StructureTable";
+            this.StructureTable.ReadOnly = true;
+            this.StructureTable.RowHeadersVisible = false;
+            this.StructureTable.RowHeadersWidth = 51;
+            this.StructureTable.RowTemplate.Height = 24;
+            this.StructureTable.Size = new System.Drawing.Size(857, 463);
+            this.StructureTable.TabIndex = 0;
             // 
             // BookName
             // 
@@ -140,19 +141,19 @@
             this.Genre.Name = "Genre";
             this.Genre.ReadOnly = true;
             // 
-            // Year
-            // 
-            this.Year.HeaderText = "Год";
-            this.Year.MinimumWidth = 6;
-            this.Year.Name = "Year";
-            this.Year.ReadOnly = true;
-            // 
             // Publisher
             // 
-            this.Publisher.HeaderText = "Издатель";
+            this.Publisher.HeaderText = "Издательство";
             this.Publisher.MinimumWidth = 6;
             this.Publisher.Name = "Publisher";
             this.Publisher.ReadOnly = true;
+            // 
+            // Year
+            // 
+            this.Year.HeaderText = "Год издания";
+            this.Year.MinimumWidth = 6;
+            this.Year.Name = "Year";
+            this.Year.ReadOnly = true;
             // 
             // NameGenrePage
             // 
@@ -160,7 +161,7 @@
             this.NameGenrePage.Location = new System.Drawing.Point(4, 25);
             this.NameGenrePage.Name = "NameGenrePage";
             this.NameGenrePage.Padding = new System.Windows.Forms.Padding(3);
-            this.NameGenrePage.Size = new System.Drawing.Size(665, 415);
+            this.NameGenrePage.Size = new System.Drawing.Size(869, 475);
             this.NameGenrePage.TabIndex = 1;
             this.NameGenrePage.Text = "Название/жанр";
             this.NameGenrePage.UseVisualStyleBackColor = true;
@@ -201,7 +202,7 @@
             this.NameGenreTable.RowHeadersVisible = false;
             this.NameGenreTable.RowHeadersWidth = 51;
             this.NameGenreTable.RowTemplate.Height = 24;
-            this.NameGenreTable.Size = new System.Drawing.Size(653, 403);
+            this.NameGenreTable.Size = new System.Drawing.Size(857, 547);
             this.NameGenreTable.TabIndex = 1;
             // 
             // dataGridViewTextBoxColumn1
@@ -222,7 +223,7 @@
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(665, 415);
+            this.tabPage3.Size = new System.Drawing.Size(869, 475);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Справочник Полины";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -230,7 +231,7 @@
             // Add_button
             // 
             this.Add_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Add_button.Location = new System.Drawing.Point(10, 450);
+            this.Add_button.Location = new System.Drawing.Point(10, 510);
             this.Add_button.Name = "Add_button";
             this.Add_button.Size = new System.Drawing.Size(114, 32);
             this.Add_button.TabIndex = 2;
@@ -242,7 +243,7 @@
             // Delete_button
             // 
             this.Delete_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Delete_button.Location = new System.Drawing.Point(250, 450);
+            this.Delete_button.Location = new System.Drawing.Point(250, 510);
             this.Delete_button.Name = "Delete_button";
             this.Delete_button.Size = new System.Drawing.Size(114, 32);
             this.Delete_button.TabIndex = 3;
@@ -253,7 +254,7 @@
             // Change_button
             // 
             this.Change_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Change_button.Location = new System.Drawing.Point(130, 450);
+            this.Change_button.Location = new System.Drawing.Point(130, 510);
             this.Change_button.Name = "Change_button";
             this.Change_button.Size = new System.Drawing.Size(114, 32);
             this.Change_button.TabIndex = 4;
@@ -265,7 +266,7 @@
             // Save_button
             // 
             this.Save_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Save_button.Location = new System.Drawing.Point(370, 450);
+            this.Save_button.Location = new System.Drawing.Point(490, 510);
             this.Save_button.Name = "Save_button";
             this.Save_button.Size = new System.Drawing.Size(114, 32);
             this.Save_button.TabIndex = 5;
@@ -277,7 +278,7 @@
             // Load_button
             // 
             this.Load_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Load_button.Location = new System.Drawing.Point(490, 450);
+            this.Load_button.Location = new System.Drawing.Point(610, 510);
             this.Load_button.Name = "Load_button";
             this.Load_button.Size = new System.Drawing.Size(114, 32);
             this.Load_button.TabIndex = 6;
@@ -292,18 +293,31 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CurStateInfo.BackColor = System.Drawing.SystemColors.Control;
             this.CurStateInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.CurStateInfo.Location = new System.Drawing.Point(12, 490);
+            this.CurStateInfo.Location = new System.Drawing.Point(12, 554);
             this.CurStateInfo.Name = "CurStateInfo";
-            this.CurStateInfo.Size = new System.Drawing.Size(651, 31);
+            this.CurStateInfo.Size = new System.Drawing.Size(855, 31);
             this.CurStateInfo.TabIndex = 7;
             this.CurStateInfo.TabStop = false;
             this.CurStateInfo.Text = "";
+            // 
+            // findByYears_button
+            // 
+            this.findByYears_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.findByYears_button.Location = new System.Drawing.Point(370, 510);
+            this.findByYears_button.Name = "findByYears_button";
+            this.findByYears_button.Size = new System.Drawing.Size(114, 32);
+            this.findByYears_button.TabIndex = 9;
+            this.findByYears_button.TabStop = false;
+            this.findByYears_button.Text = "Найти";
+            this.findByYears_button.UseVisualStyleBackColor = true;
+            this.findByYears_button.Click += new System.EventHandler(this.findByYears_button_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(670, 533);
+            this.ClientSize = new System.Drawing.Size(874, 597);
+            this.Controls.Add(this.findByYears_button);
             this.Controls.Add(this.CurStateInfo);
             this.Controls.Add(this.Load_button);
             this.Controls.Add(this.Save_button);
@@ -316,7 +330,7 @@
             this.Text = "Библиотека";
             this.tabControl.ResumeLayout(false);
             this.MainPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.MainTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StructureTable)).EndInit();
             this.NameGenrePage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.NameGenreTable)).EndInit();
             this.ResumeLayout(false);
@@ -324,17 +338,9 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage MainPage;
         private System.Windows.Forms.TabPage NameGenrePage;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.DataGridView MainTable;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BookName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Author;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Genre;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Year;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Publisher;
         private System.Windows.Forms.DataGridView NameGenreTable;
         private System.Windows.Forms.Button Add_button;
         private System.Windows.Forms.Button Delete_button;
@@ -344,6 +350,14 @@
         private System.Windows.Forms.RichTextBox CurStateInfo;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.Button findByYears_button;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BookName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Author;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Genre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Publisher;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Year;
+        protected internal System.Windows.Forms.DataGridView StructureTable;
+        protected internal System.Windows.Forms.TabControl tabControl;
     }
 }
 

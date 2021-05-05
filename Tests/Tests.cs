@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using RB_Tree;
-using OA_Hashtable;
+using RBTree;
+using OAHashtable;
 using DoubleLinkedList;
 
 namespace Tests
@@ -11,7 +11,7 @@ namespace Tests
     {
         static void RB_Tree_test()
         {
-            RB_Tree<int, int> tree = new RB_Tree<int, int>();
+            RBTree<int, int> tree = new RBTree<int, int>();
             bool quit = false;
             while (!quit)
             {
@@ -75,7 +75,7 @@ namespace Tests
         }
         static void OA_Hashtbale_test()
         {
-            OA_Hashtable<string, string> table = new OA_Hashtable<string, string>();
+            OAHashtable<string, string> table = new OAHashtable<string, string>();
             bool quit = false;
             while (!quit)
             {
@@ -115,7 +115,21 @@ namespace Tests
         }
         static void Main(string[] args)
         {
+            Console.WriteLine($"a: {(int)'a'}, b: {(int)'b'}");
 
+
+            // образец ab
+            long ab = 'b' + 128 * 'a';
+            Console.WriteLine(ab % 13);
+            // строка abbab, q = 13 => h = 11 (основание 128)
+            // значение для bb
+            long bb = 128 * (ab - 'a' * 11) + 'b';
+            Console.WriteLine(bb % 13);
+            // значение для ba
+            long ba = 128 * (bb - 'b' * 11) + 'a';
+            Console.WriteLine(ba % 13);
+            ab =     128 * (ba - 'b' * 11) + 'b';
+            Console.WriteLine(ab % 13);
         }
     }
 }

@@ -46,7 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DoubleLinkedList.cs" />
+    <Compile Include="DoubleLinkedList.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="FindForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindForm.Designer.cs">
+      <DependentUpon>FindForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,21 +62,30 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Misc.cs" />
-    <Compile Include="NameGenre.cs">
+    <Compile Include="NameGenreForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NameGenre.Designer.cs">
-      <DependentUpon>NameGenre.cs</DependentUpon>
+    <Compile Include="NameGenreForm.Designer.cs">
+      <DependentUpon>NameGenreForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OA_Hashtable.cs" />
-    <Compile Include="Tests.cs" />
+    <Compile Include="OAHashtable.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RB-Tree.cs" />
+    <Compile Include="RBTree.cs" />
+    <Compile Include="StructureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StructureForm.Designer.cs">
+      <DependentUpon>StructureForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="FindForm.resx">
+      <DependentUpon>FindForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NameGenre.resx">
-      <DependentUpon>NameGenre.cs</DependentUpon>
+    <EmbeddedResource Include="NameGenreForm.resx">
+      <DependentUpon>NameGenreForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -79,6 +96,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="StructureForm.resx">
+      <DependentUpon>StructureForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

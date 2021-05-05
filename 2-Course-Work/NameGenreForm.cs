@@ -2,9 +2,9 @@
 
 namespace _2_Course_Work
 {
-    public partial class NameGenre : Form
+    public partial class NameGenreForm : Form
     {
-        public NameGenre(string formName)
+        public NameGenreForm(string formName)
         {
             InitializeComponent();
             Text = formName;

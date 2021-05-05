@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -10,20 +9,23 @@ using System.Windows.Forms;
 using System.IO;
 
 using DoubleLinkedList;
-using OA_Hashtable;
-using RB_Tree;
+using OAHashtable;
+using RBTree;
 
 namespace _2_Course_Work
 {
     public partial class MainForm : Form
     {
-        const string CORRECT_USER_INPUT = "^[a-zA-Zа-яА-Я0-9.,-:;'\"()!? ]*$";
-        const int FILE_OUTPUT_SPACE = 32;
-        bool nameGenreTableSaved = false;
-        OA_Hashtable<string, string> OAHT = new OA_Hashtable<string, string>();
+        private const string CORRECT_USER_INPUT = "^[a-zA-Zа-яА-Я0-9.,-:;'\"()!? ]*$";
+        private const int FILE_OUTPUT_SPACE = 32;
+        private bool nameGenreTableSaved = false;
+        protected internal OAHashtable<string, string> OAHT = new OAHashtable<string, string>();
+        protected internal RBTree<int, int> RBT = new RBTree<int, int>();
+        private StructureForm structureForm = new StructureForm();
         public MainForm()
         {
             InitializeComponent();
+            structureForm.Owner = this;
         }
         private void LoadFile(DataGridView grid)
         {            
@@ -36,7 +38,11 @@ namespace _2_Course_Work
             if (result == DialogResult.OK)
             {
                 grid.Rows.Clear();
-                if (grid == NameGenreTable) OAHT.Clear();
+                if (grid == NameGenreTable)
+                {
+                    OAHT.Clear();
+                    structureForm.Name_comboBox.Items.Clear();
+                }
                 StreamReader reader = new StreamReader(openDialog.FileName);
                 while (!reader.EndOfStream)
                 {
@@ -47,6 +53,7 @@ namespace _2_Course_Work
                         OAHT.Add(cells[0], cells[1]);
                     }
                     grid.Rows.Add(cells);
+                    structureForm.Name_comboBox.Items.Add(cells[0]);
                 }
                 reader.Close();
                 UpdateInfo("Справочник успешно загружен");
@@ -89,6 +96,12 @@ namespace _2_Course_Work
                 UpdateInfo("Запись успешно добавлена");
             }
         }
+        private void StructureAdd(string name, string author, string genre, string publisher, int year)
+        {
+            int index = StructureTable.Rows.Add(name, author, genre, publisher, year);
+            RBT.Add(year, index);
+            UpdateInfo("Запись успешно добавлена");
+        }
         private void ChangeName(string name, string prevName, string genre, DataGridViewCell cell)
         {
             if (name == prevName)
@@ -126,39 +139,79 @@ namespace _2_Course_Work
         }
         private void Add_button_Click(object sender, EventArgs e)
         {
-            if (tabControl.SelectedIndex == 1)
+            if (tabControl.SelectedIndex == 0) // структура
             {
-                var form = new NameGenre("Добавить");
+                structureForm.ResetToDefault();
+                structureForm.Text = "Добавить";
+                DialogResult result = structureForm.ShowDialog();
+                string name, genre, publisher, author;
+                int year;
+                bool success = false;
+                while (!success)
+                {
+                    if (result == DialogResult.Cancel) return;
+                    if (result == DialogResult.OK)
+                    {
+                        if (structureForm.Name_comboBox.Text == "")
+                        {
+                            MessageBox.Show("Пожалуйста, заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            result = structureForm.ShowDialog();
+                        }
+                        else if (structureForm.Publisher_textBox.Text == "")
+                        {
+                            MessageBox.Show("Пожалуйста, заполните издательство", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            result = structureForm.ShowDialog();
+                        }
+                        // сделать еще проверку на пустое поле автора (как Полина соизволит написать справочник)
+                        else
+                        {
+                            name = structureForm.Name_comboBox.Text;
+                            author = structureForm.Author_textBox.Text;
+                            genre = structureForm.Genre_textBox.Text;
+                            year = (int)structureForm.Year_numeric.Value;
+                            publisher = structureForm.Publisher_textBox.Text;
+                            StructureAdd(name, author, genre, publisher, year);
+                            success = true;
+                        }
+                    }
+                }
+            }
+            if (tabControl.SelectedIndex == 1) // справочник Влада
+            {
+                var form = new NameGenreForm("Добавить");
                 DialogResult result = form.ShowDialog();
                 string name, genre;
                 bool success = false;
                 while (!success)
                 {
                     if (result == DialogResult.Cancel) return;
-                    if (result == DialogResult.OK && form.Name_textBox.Text == "")
+                    if (result == DialogResult.OK)
                     {
-                        MessageBox.Show("Пожалуйста, заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        result = form.ShowDialog();
-                    }
-                    else if (result == DialogResult.OK && form.Genre_textBox.Text == "")
-                    {
-                        MessageBox.Show("Пожалуйста, заполните жанр", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        result = form.ShowDialog();
-                    }
-                    else if (result == DialogResult.OK && (HasIncorrectSymbols(form.Name_textBox.Text) 
-                        || HasIncorrectSymbols(form.Genre_textBox.Text)))
-                    {
-                        MessageBox.Show("Обнаружен недопустимый символ.\nВ полях можно использовать буквы, цифры и знаки препинания.", 
-                            "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        result = form.ShowDialog();
-                    }
-                    else
-                    {
-                        name = form.Name_textBox.Text;
-                        genre = form.Genre_textBox.Text;
-                        NameGenreAdd(name, genre);                        
-                        success = true;
-                    }
+                        if (form.Name_textBox.Text == "")
+                        {
+                            MessageBox.Show("Пожалуйста, заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            result = form.ShowDialog();
+                        }
+                        else if (form.Genre_textBox.Text == "")
+                        {
+                            MessageBox.Show("Пожалуйста, заполните жанр", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            result = form.ShowDialog();
+                        }
+                        else if (HasIncorrectSymbols(form.Name_textBox.Text) || HasIncorrectSymbols(form.Genre_textBox.Text))
+                        {
+                            MessageBox.Show("Обнаружен недопустимый символ.\nВ полях можно использовать буквы, цифры и знаки препинания.",
+                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            result = form.ShowDialog();
+                        }
+                        else
+                        {
+                            name = form.Name_textBox.Text;
+                            genre = form.Genre_textBox.Text;
+                            NameGenreAdd(name, genre);
+                            structureForm.Name_comboBox.Items.Add(name);
+                            success = true;
+                        }
+                    }                    
                 }
             }
         }
@@ -177,7 +230,7 @@ namespace _2_Course_Work
                 string name = prevName;
                 string genre = NameGenreTable.CurrentCell.OwningRow.Cells[1].Value.ToString();                
                 bool nameChange = NameGenreTable.CurrentCell.ColumnIndex == 0;
-                var form = new NameGenre("Изменить");
+                var form = new NameGenreForm("Изменить");
                 form.Name_textBox.Text = name;
                 form.Genre_textBox.Text = genre;
                 if (nameChange)
@@ -212,6 +265,8 @@ namespace _2_Course_Work
                         {
                             name = form.Name_textBox.Text;
                             ChangeName(name, prevName, genre, cell);
+                            structureForm.Name_comboBox.Items.Remove(prevName);
+                            structureForm.Name_comboBox.Items.Add(name);
                             success = true;
                         }
                     }
@@ -275,6 +330,13 @@ namespace _2_Course_Work
                 case 2: // справочник Полины
                     break;
             }
+        }
+        private void findByYears_button_Click(object sender, EventArgs e)
+        {
+            FindForm form = new FindForm();
+            form.Owner = this;
+            form.Show();
+            form.Location = new Point(Location.X + Width / 2 - form.Width / 2, Location.Y + Height / 2 - form.Height / 2);
         }
     }
 }
