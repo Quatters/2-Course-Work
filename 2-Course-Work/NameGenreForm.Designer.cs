@@ -1,6 +1,6 @@
 ﻿namespace _2_Course_Work
 {
-    partial class NameGenre
+    partial class NameGenreForm
     {
         /// <summary>
         /// Required designer variable.
@@ -38,7 +38,7 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(29, 22);
+            this.label1.Location = new System.Drawing.Point(23, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 22);
             this.label1.TabIndex = 0;
@@ -46,7 +46,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(29, 61);
+            this.label2.Location = new System.Drawing.Point(23, 61);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(95, 22);
             this.label2.TabIndex = 1;
@@ -54,14 +54,14 @@
             // 
             // Name_textBox
             // 
-            this.Name_textBox.Location = new System.Drawing.Point(130, 22);
+            this.Name_textBox.Location = new System.Drawing.Point(124, 22);
             this.Name_textBox.Name = "Name_textBox";
             this.Name_textBox.Size = new System.Drawing.Size(213, 22);
             this.Name_textBox.TabIndex = 1;
             // 
             // Genre_textBox
             // 
-            this.Genre_textBox.Location = new System.Drawing.Point(130, 61);
+            this.Genre_textBox.Location = new System.Drawing.Point(124, 61);
             this.Genre_textBox.Name = "Genre_textBox";
             this.Genre_textBox.Size = new System.Drawing.Size(213, 22);
             this.Genre_textBox.TabIndex = 2;
@@ -69,7 +69,7 @@
             // Cancel_button
             // 
             this.Cancel_button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_button.Location = new System.Drawing.Point(258, 102);
+            this.Cancel_button.Location = new System.Drawing.Point(252, 102);
             this.Cancel_button.Name = "Cancel_button";
             this.Cancel_button.Size = new System.Drawing.Size(85, 28);
             this.Cancel_button.TabIndex = 4;
@@ -80,7 +80,7 @@
             // OK_button
             // 
             this.OK_button.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK_button.Location = new System.Drawing.Point(167, 102);
+            this.OK_button.Location = new System.Drawing.Point(161, 102);
             this.OK_button.Name = "OK_button";
             this.OK_button.Size = new System.Drawing.Size(85, 28);
             this.OK_button.TabIndex = 5;
@@ -88,11 +88,11 @@
             this.OK_button.Text = "ОК";
             this.OK_button.UseVisualStyleBackColor = true;
             // 
-            // NameGenre
+            // NameGenreForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(368, 142);
+            this.ClientSize = new System.Drawing.Size(360, 146);
             this.Controls.Add(this.OK_button);
             this.Controls.Add(this.Cancel_button);
             this.Controls.Add(this.Genre_textBox);
@@ -100,7 +100,10 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "NameGenre";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "NameGenreForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.ResumeLayout(false);
             this.PerformLayout();

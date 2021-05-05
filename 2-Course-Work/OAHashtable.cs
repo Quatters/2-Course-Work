@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 // для защиты приготовить таблицу с ASCII-кодами
-namespace OA_Hashtable
+namespace OAHashtable
 {
     public class Pair<TKey, TValue>
     {
@@ -16,7 +16,7 @@ namespace OA_Hashtable
             Deleted = false;
         }
     }
-    public class OA_Hashtable<TKey, TValue> : IEnumerable<Pair<TKey, TValue>>
+    public class OAHashtable<TKey, TValue> : IEnumerable<Pair<TKey, TValue>>
     {
         private static double MAX_FULLNESS = 0.6;
         private static double MIN_FULLNESS = 0.15;
