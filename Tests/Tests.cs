@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using RBTree;
 using OAHashtable;
 using DoubleLinkedList;
+using ChainHashtable;
 
 namespace Tests
 {
@@ -115,21 +116,23 @@ namespace Tests
         }
         static void Main(string[] args)
         {
-            Console.WriteLine($"a: {(int)'a'}, b: {(int)'b'}");
+            ChainHashtable<string, string> table = new ChainHashtable<string, string>();
+            string name = "faf";
+            string author = "jj";
+            table.AddElem(name, author);
+            name = "Трое в лодке, не считая собаки";
+            author = "Джером К. Джером";
+            table.AddElem(name, author);
+            name = "ffa";
+            author = "jj";
+            table.AddElem(name, author);
+            table.Print();
+            table.AddElem(name, author);
+            table.Print();
+            name = "faf";
+            table.DeleteElem(name);
+            table.Print();
 
-
-            // образец ab
-            long ab = 'b' + 128 * 'a';
-            Console.WriteLine(ab % 13);
-            // строка abbab, q = 13 => h = 11 (основание 128)
-            // значение для bb
-            long bb = 128 * (ab - 'a' * 11) + 'b';
-            Console.WriteLine(bb % 13);
-            // значение для ba
-            long ba = 128 * (bb - 'b' * 11) + 'a';
-            Console.WriteLine(ba % 13);
-            ab =     128 * (ba - 'b' * 11) + 'b';
-            Console.WriteLine(ab % 13);
         }
     }
 }

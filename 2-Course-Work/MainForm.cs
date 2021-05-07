@@ -11,6 +11,7 @@ using System.IO;
 using DoubleLinkedList;
 using OAHashtable;
 using RBTree;
+using ChainHashtable;
 
 namespace _2_Course_Work
 {
@@ -21,6 +22,7 @@ namespace _2_Course_Work
         private bool nameGenreTableSaved = false;
         protected internal OAHashtable<string, string> OAHT = new OAHashtable<string, string>();
         protected internal RBTree<int, int> RBT = new RBTree<int, int>();
+        protected internal ChainHashtable<string, string> CHT = new ChainHashtable<string, string>(50);
         private StructureForm structureForm = new StructureForm();
         public MainForm()
         {
@@ -93,6 +95,20 @@ namespace _2_Course_Work
             {
                 OAHT.Add(name, genre);
                 NameGenreTable.Rows.Add(name, genre);
+                UpdateInfo("Запись успешно добавлена");
+            }
+        }
+
+        private void NameAuthorAdd(string name, string author)
+        {
+            if (CHT.Contains(name))
+            {
+                UpdateInfo("Запись не добавлена. Указанная книга уже есть в справочнике");
+            }
+            else
+            {
+                CHT.AddElem(name, author);
+                NameAuthorTable.Rows.Add(name, author);
                 UpdateInfo("Запись успешно добавлена");
             }
         }
@@ -212,6 +228,44 @@ namespace _2_Course_Work
                             success = true;
                         }
                     }                    
+                }
+            }
+            if (tabControl.SelectedIndex == 2) // справочник Полины
+            {
+                var form = new NameAuthorForm("Добавить");
+                DialogResult result = form.ShowDialog();                
+                string name, author;
+                bool success = false;
+                while (!success)
+                {
+                    if (result == DialogResult.Cancel) return;
+                    if (result == DialogResult.OK)
+                    {
+                        if (form.Name_textBox.Text == "")
+                        {
+                            MessageBox.Show("Пожалуйста, заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            result = form.ShowDialog();
+                        }
+                        else if (form.Author_textBox.Text == "")
+                        {
+                            MessageBox.Show("Пожалуйста, заполните автора", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            result = form.ShowDialog();
+                        }
+                        else if (HasIncorrectSymbols(form.Name_textBox.Text) || HasIncorrectSymbols(form.Author_textBox.Text))
+                        {
+                            MessageBox.Show("Обнаружен недопустимый символ.\nВ полях можно использовать буквы, цифры и знаки препинания.",
+                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            result = form.ShowDialog();
+                        }
+                        else
+                        {
+                            name = form.Name_textBox.Text;
+                            author = form.Author_textBox.Text;
+                            NameAuthorAdd(name, author);
+                            structureForm.Name_comboBox.Items.Add(name); //владику надо вспомнить потом что-то
+                            success = true;
+                        }
+                    }
                 }
             }
         }
@@ -337,6 +391,11 @@ namespace _2_Course_Work
             form.Owner = this;
             form.Show();
             form.Location = new Point(Location.X + Width / 2 - form.Width / 2, Location.Y + Height / 2 - form.Height / 2);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

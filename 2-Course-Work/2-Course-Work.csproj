@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChainHashtable.cs" />
     <Compile Include="DoubleLinkedList.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -62,6 +63,12 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Misc.cs" />
+    <Compile Include="NameAuthorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NameAuthorForm.Designer.cs">
+      <DependentUpon>NameAuthorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="NameGenreForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +90,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NameAuthorForm.resx">
+      <DependentUpon>NameAuthorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NameGenreForm.resx">
       <DependentUpon>NameGenreForm.cs</DependentUpon>
