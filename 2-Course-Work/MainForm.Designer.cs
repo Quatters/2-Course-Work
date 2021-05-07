@@ -86,7 +86,7 @@
             this.MainPage.Controls.Add(this.StructureTable);
             this.MainPage.Location = new System.Drawing.Point(4, 25);
             this.MainPage.Name = "MainPage";
-            this.MainPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.MainPage.Padding = new System.Windows.Forms.Padding(3);
             this.MainPage.Size = new System.Drawing.Size(869, 475);
             this.MainPage.TabIndex = 0;
             this.MainPage.Text = "Структура";
@@ -167,7 +167,7 @@
             this.NameGenrePage.Controls.Add(this.NameGenreTable);
             this.NameGenrePage.Location = new System.Drawing.Point(4, 25);
             this.NameGenrePage.Name = "NameGenrePage";
-            this.NameGenrePage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.NameGenrePage.Padding = new System.Windows.Forms.Padding(3);
             this.NameGenrePage.Size = new System.Drawing.Size(869, 475);
             this.NameGenrePage.TabIndex = 1;
             this.NameGenrePage.Text = "Название/жанр";
@@ -209,7 +209,7 @@
             this.NameGenreTable.RowHeadersVisible = false;
             this.NameGenreTable.RowHeadersWidth = 51;
             this.NameGenreTable.RowTemplate.Height = 24;
-            this.NameGenreTable.Size = new System.Drawing.Size(857, 547);
+            this.NameGenreTable.Size = new System.Drawing.Size(857, 463);
             this.NameGenreTable.TabIndex = 1;
             // 
             // dataGridViewTextBoxColumn1
@@ -258,7 +258,7 @@
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.NameAuthorTable.DefaultCellStyle = dataGridViewCellStyle4;
-            this.NameAuthorTable.Location = new System.Drawing.Point(3, 3);
+            this.NameAuthorTable.Location = new System.Drawing.Point(6, 6);
             this.NameAuthorTable.MultiSelect = false;
             this.NameAuthorTable.Name = "NameAuthorTable";
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -272,7 +272,7 @@
             this.NameAuthorTable.RowHeadersVisible = false;
             this.NameAuthorTable.RowHeadersWidth = 51;
             this.NameAuthorTable.RowTemplate.Height = 24;
-            this.NameAuthorTable.Size = new System.Drawing.Size(860, 509);
+            this.NameAuthorTable.Size = new System.Drawing.Size(857, 463);
             this.NameAuthorTable.TabIndex = 2;
             // 
             // CH_Name
@@ -350,6 +350,7 @@
             // 
             // CurStateInfo
             // 
+            this.CurStateInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CurStateInfo.BackColor = System.Drawing.SystemColors.Control;
             this.CurStateInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CurStateInfo.Location = new System.Drawing.Point(12, 554);
@@ -387,7 +388,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Библиотека";
-            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.tabControl.ResumeLayout(false);
             this.MainPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.StructureTable)).EndInit();

@@ -1,10 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace _2_Course_Work
@@ -20,7 +14,7 @@ namespace _2_Course_Work
         {
             MainForm mainForm = (MainForm)Owner;
             Genre_textBox.Text = mainForm.OAHT.GetValue(Name_comboBox.Text);
-            // добавить автозаполнения поля автора
+            Author_textBox.Text = mainForm.CHT.GetValue(Name_comboBox.Text);
         }
         protected internal void ResetToDefault()
         {

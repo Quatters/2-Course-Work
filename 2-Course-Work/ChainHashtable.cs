@@ -62,6 +62,21 @@ namespace ChainHashtable
             return hashtable[index].Contains(pair) == false ? -1 : index;
         }
 
+        public TValue GetValue(TKey key)
+        {
+            int index = FindElem(key);
+            if ( index != -1)
+            {
+                foreach (var pair in hashtable[index])
+                {
+                    if (pair.Key.Key.Equals(key))
+                    {
+                        return pair.Key.Value;
+                    }
+                }
+            }
+            return default;
+        }
         public int FindElem(TKey key)
         {            
             int index = Hash(key);

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-using DoubleLinkedList;
 using OAHashtable;
 using RBTree;
 using ChainHashtable;
@@ -18,8 +17,8 @@ namespace _2_Course_Work
     public partial class MainForm : Form
     {
         private const string CORRECT_USER_INPUT = "^[a-zA-Zа-яА-Я0-9.,-:;'\"()!? ]*$";
-        private const int FILE_OUTPUT_SPACE = 32;
-        private bool nameGenreTableSaved = false;
+        private const int FILE_OUTPUT_SPACE = 0;
+        private bool saved = true;
         protected internal OAHashtable<string, string> OAHT = new OAHashtable<string, string>();
         protected internal RBTree<int, int> RBT = new RBTree<int, int>();
         protected internal ChainHashtable<string, string> CHT = new ChainHashtable<string, string>(50);
@@ -29,39 +28,92 @@ namespace _2_Course_Work
             InitializeComponent();
             structureForm.Owner = this;
         }
-        private void LoadFile(DataGridView grid)
+        private void LoadFile()
         {            
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.Filter = "Справочник (*.txt)|*.txt";
             openDialog.InitialDirectory = "C:\\Users\\mi\\source\\repos\\2-Course-Work\\saves";
             DialogResult result = openDialog.ShowDialog();
-            string line;
+            string line = "";
             string[] cells;
             if (result == DialogResult.OK)
             {
-                grid.Rows.Clear();
-                if (grid == NameGenreTable)
+                StreamReader reader;
+                try
                 {
-                    OAHT.Clear();
-                    structureForm.Name_comboBox.Items.Clear();
+                    reader = new StreamReader(openDialog.FileName);
                 }
-                StreamReader reader = new StreamReader(openDialog.FileName);
-                while (!reader.EndOfStream)
+                catch (Exception)
                 {
-                    line = CleanString(reader.ReadLine());
-                    cells = line.Replace(' ', '#').Replace('_', ' ').Split('#');
-                    if (grid == NameGenreTable)
+                    UpdateInfo("Ошибка при открытии файла");
+                    return;
+                }
+                StructureTable.Rows.Clear();
+                NameGenreTable.Rows.Clear();
+                NameAuthorTable.Rows.Clear();
+                OAHT.Clear();
+                CHT.Clear();
+                RBT.Clear();
+                // добавить очистку авл-дерева
+                structureForm.Name_comboBox.Items.Clear();
+                try
+                {
+                    while (!reader.ReadLine().StartsWith("#"));
+                    int iter = 0;
+                    while (!line.StartsWith("#")) // чтение структуры
                     {
+                        line = CleanString(reader.ReadLine());
+                        if (line.StartsWith("#")) continue;
+                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
+                        RBT.Add(iter, int.Parse(cells[4]));
+                        StructureTable.Rows.Add(cells);
+                    } 
+
+                    while (!reader.ReadLine().StartsWith("#"));
+                    line = reader.ReadLine();
+                    while (!line.StartsWith("#")) // чтение название - жанр
+                    {
+                        line = CleanString(reader.ReadLine());
+                        if (line.StartsWith("#")) continue;
+                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
                         OAHT.Add(cells[0], cells[1]);
-                    }
-                    grid.Rows.Add(cells);
-                    structureForm.Name_comboBox.Items.Add(cells[0]);
+                        NameGenreTable.Rows.Add(cells);
+                    } 
+
+                    while (!reader.ReadLine().StartsWith("#"));
+                    line = reader.ReadLine();
+                    while (!line.StartsWith("#")) // чтение название - автор
+                    {
+                        line = CleanString(reader.ReadLine());
+                        if (line.StartsWith("#")) continue;
+                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
+                        CHT.AddElem(cells[0], cells[1]);
+                        if (OAHT.Contains(cells[0])) structureForm.Name_comboBox.Items.Add(cells[0]);
+                        NameAuthorTable.Rows.Add(cells);
+                    } 
+
+                    reader.Close();
+                    UpdateInfo("Справочники успешно загружены");
+                }                
+                catch (Exception)
+                {
+                    UpdateInfo("Ошибка при чтении файла. Файл имеет неверный формат");
+                    return;
                 }
-                reader.Close();
-                UpdateInfo("Справочник успешно загружен");
             }
         }
-        private void SaveFile(DataGridView grid)
+        private void SaveGrid(DataGridView grid, StreamWriter writer)
+        {
+            for (int i = 0; i < grid.RowCount; i++)
+            {
+                for (int j = 0; j < grid.ColumnCount; j++)
+                {
+                    writer.Write($"{grid.Rows[i].Cells[j].Value.ToString().Replace(' ', '_'), -FILE_OUTPUT_SPACE} ");
+                }
+                writer.WriteLine();
+            }
+        }
+        private void SaveFile()
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.Filter = "Справочник (*.txt)|*.txt";
@@ -70,15 +122,14 @@ namespace _2_Course_Work
             if (result == DialogResult.OK)
             {
                 StreamWriter writer = new StreamWriter(saveDialog.FileName);
-                for (int i = 0; i < grid.RowCount; i++)
-                {
-                    for (int j = 0; j < grid.ColumnCount; j++)
-                    {
-                        writer.Write($"{grid.Rows[i].Cells[j].Value.ToString().Replace(' ', '_'), -FILE_OUTPUT_SPACE} ");
-                    }
-                    writer.WriteLine();
-                }
+                writer.WriteLine($"# Общая структура");
+                SaveGrid(StructureTable, writer);
+                writer.WriteLine($"\n# Название — жанр");
+                SaveGrid(NameGenreTable, writer);
+                writer.WriteLine($"\n# Название — автор");
+                SaveGrid(NameAuthorTable, writer);
                 writer.Close();
+                saved = true;
                 UpdateInfo("Справочник успешно сохранен");
             }
         }
@@ -95,10 +146,10 @@ namespace _2_Course_Work
             {
                 OAHT.Add(name, genre);
                 NameGenreTable.Rows.Add(name, genre);
+                saved = false;
                 UpdateInfo("Запись успешно добавлена");
             }
         }
-
         private void NameAuthorAdd(string name, string author)
         {
             if (CHT.Contains(name))
@@ -109,6 +160,7 @@ namespace _2_Course_Work
             {
                 CHT.AddElem(name, author);
                 NameAuthorTable.Rows.Add(name, author);
+                saved = false;
                 UpdateInfo("Запись успешно добавлена");
             }
         }
@@ -134,7 +186,7 @@ namespace _2_Course_Work
                 OAHT.Delete(prevName);
                 OAHT.Add(name, genre);
                 cell.Value = name;
-                nameGenreTableSaved = false;
+                saved = false;
                 UpdateInfo("Запись успешно изменена");
             }
             
@@ -149,7 +201,7 @@ namespace _2_Course_Work
             {
                 OAHT.GetPair(name).Value = genre;
                 cell.Value = genre;
-                nameGenreTableSaved = false;
+                saved = false;
                 UpdateInfo("Запись успешно изменена");
             }
         }
@@ -178,7 +230,6 @@ namespace _2_Course_Work
                             MessageBox.Show("Пожалуйста, заполните издательство", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             result = structureForm.ShowDialog();
                         }
-                        // сделать еще проверку на пустое поле автора (как Полина соизволит написать справочник)
                         else
                         {
                             name = structureForm.Name_comboBox.Text;
@@ -224,10 +275,10 @@ namespace _2_Course_Work
                             name = form.Name_textBox.Text;
                             genre = form.Genre_textBox.Text;
                             NameGenreAdd(name, genre);
-                            structureForm.Name_comboBox.Items.Add(name);
+                            if (CHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
                             success = true;
                         }
-                    }                    
+                    }
                 }
             }
             if (tabControl.SelectedIndex == 2) // справочник Полины
@@ -262,7 +313,7 @@ namespace _2_Course_Work
                             name = form.Name_textBox.Text;
                             author = form.Author_textBox.Text;
                             NameAuthorAdd(name, author);
-                            structureForm.Name_comboBox.Items.Add(name); //владику надо вспомнить потом что-то
+                            if (OAHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
                             success = true;
                         }
                     }
@@ -320,7 +371,7 @@ namespace _2_Course_Work
                             name = form.Name_textBox.Text;
                             ChangeName(name, prevName, genre, cell);
                             structureForm.Name_comboBox.Items.Remove(prevName);
-                            structureForm.Name_comboBox.Items.Add(name);
+                            if (CHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
                             success = true;
                         }
                     }
@@ -351,39 +402,27 @@ namespace _2_Course_Work
                 }
             }
         }
-        private void Save_button_Click(object sender, EventArgs e)
+        private void Save_button_Click(object sender, EventArgs e) => SaveFile();
+        private bool WantToSave()
         {
-            switch (tabControl.SelectedIndex)
-            {
-                case 0: // структура
-                    break;
-                case 1: // справочник Влада
-                    SaveFile(NameGenreTable);
-                    nameGenreTableSaved = true;
-                    break;
-                case 2: // справочник Полины
-                    break;
-            }
+            var result = MessageBox.Show("Текущий справочник не сохранен. Хотите сохранить?", "Предупреждение",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            return result == DialogResult.Yes;
+        }
+        private bool NotSavedButContinue()
+        {
+            var result = MessageBox.Show("Текущий справочник не сохранен. Продолжить?", "Предупреждение",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            return result == DialogResult.Yes;
         }
         private void Load_button_Click(object sender, EventArgs e)
         {
-            switch (tabControl.SelectedIndex)
+            if (!saved)
             {
-                case 0: // структура
-                    break;
-                case 1: // справочник Влада
-                    if (!nameGenreTableSaved && NameGenreTable.RowCount != 0)
-                    {
-                        var result = MessageBox.Show("Текущий справочник не сохранен. Продолжить?", "Предупреждение",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if (result == DialogResult.No) return;
-                    }
-                    LoadFile(NameGenreTable);
-                    nameGenreTableSaved = true;
-                    break;
-                case 2: // справочник Полины
-                    break;
+                if (!NotSavedButContinue()) return;
             }
+            LoadFile();
+            saved = true;            
         }
         private void findByYears_button_Click(object sender, EventArgs e)
         {
@@ -392,10 +431,9 @@ namespace _2_Course_Work
             form.Show();
             form.Location = new Point(Location.X + Width / 2 - form.Width / 2, Location.Y + Height / 2 - form.Height / 2);
         }
-
-        private void MainForm_Load(object sender, EventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            if (!saved && WantToSave()) SaveFile();
         }
     }
 }
