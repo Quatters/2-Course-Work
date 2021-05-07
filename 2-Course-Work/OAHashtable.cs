@@ -18,9 +18,9 @@ namespace OAHashtable
     }
     public class OAHashtable<TKey, TValue> : IEnumerable<Pair<TKey, TValue>>
     {
-        private static double MAX_FULLNESS = 0.6;
-        private static double MIN_FULLNESS = 0.15;
-        private static int DEFAULT_SIZE = 8;
+        private const double MAX_FULLNESS = 0.6;
+        private const double MIN_FULLNESS = 0.15;
+        private const int DEFAULT_SIZE = 8;
         private Pair<TKey, TValue>[] hashtable = new Pair<TKey, TValue>[DEFAULT_SIZE];
         private int size = DEFAULT_SIZE;
         private int stored = 0;
