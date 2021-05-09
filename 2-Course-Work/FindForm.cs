@@ -41,12 +41,12 @@ namespace _2_Course_Work
         }
         private void Find_button_Click(object sender, EventArgs e)
         {
-            DoubleLinkedList<int> foundYears = GetYearIndices((int)fromYear_numeric.Value, (int)toYear_numeric.Value);
+            DoubleLinkedList<DataGridViewRow> foundYears = GetYearRows((int)fromYear_numeric.Value, (int)toYear_numeric.Value);
             mainForm.tabControl.SelectedIndex = 0;
             mainForm.StructureTable.Rows.Clear();
             if (byYears_checkbox.Checked && !byPublisher_checkbox.Checked) // выбран только год
             {
-                foreach (var index in foundYears) mainForm.StructureTable.Rows.Add(oldRows[index.Key]);
+                foreach (var row in foundYears) mainForm.StructureTable.Rows.Add(row.Key);
             }
             else if (!byYears_checkbox.Checked && byPublisher_checkbox.Checked) // выбран только издатель
             {
@@ -78,11 +78,12 @@ namespace _2_Course_Work
             mainForm.StructureTable.Rows.Clear();
             foreach (var row in oldRows) mainForm.StructureTable.Rows.Add(row);
             SaveSettings();
+            mainForm.findFormShown = false;
         }
-        private DoubleLinkedList<int> GetYearIndices(int from, int to)
+        private DoubleLinkedList<DataGridViewRow> GetYearRows(int from, int to)
         {
-            DoubleLinkedList<int> result = new DoubleLinkedList<int>();
-            DoubleLinkedList<int> currentList = new DoubleLinkedList<int>();
+            DoubleLinkedList<DataGridViewRow> result = new DoubleLinkedList<DataGridViewRow>();
+            DoubleLinkedList<DataGridViewRow> currentList = new DoubleLinkedList<DataGridViewRow>();
             for (int i = from; i <= to; i++)
             {
                 currentList = mainForm.RBT.GetValues(i);

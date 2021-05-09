@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-// для защиты приготовить таблицу с ASCII-кодами
+﻿// для защиты приготовить таблицу с ASCII-кодами
 namespace OAHashtable
 {
     public class Pair<TKey, TValue>
@@ -16,7 +13,7 @@ namespace OAHashtable
             Deleted = false;
         }
     }
-    public class OAHashtable<TKey, TValue> : IEnumerable<Pair<TKey, TValue>>
+    public class OAHashtable<TKey, TValue> : System.Collections.Generic.IEnumerable<Pair<TKey, TValue>>
     {
         private const double MAX_FULLNESS = 0.6;
         private const double MIN_FULLNESS = 0.15;
@@ -25,13 +22,15 @@ namespace OAHashtable
         private int size = DEFAULT_SIZE;
         private int stored = 0;
         public double Fullness => (double)stored / size;
+        public int Stores => stored;
+        public int CurrentSize => size;
         public void Clear()
         {
             size = DEFAULT_SIZE;
             stored = 0;
             hashtable = new Pair<TKey, TValue>[DEFAULT_SIZE];    
         }
-        private int GetIndex(TKey key)
+        protected internal int GetIndex(TKey key)
         {
             int i = 0;
             int hash = Hash(key, i);
@@ -154,13 +153,13 @@ namespace OAHashtable
             foreach (var item in oldtable) if (item != null && !item.Deleted) Add(item);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             int i = 0;
             while (i < size && hashtable[i] == null) i++;
             if (hashtable[i] != null && !hashtable[i].Deleted) yield return hashtable[i];
         }
-        IEnumerator<Pair<TKey, TValue>> IEnumerable<Pair<TKey, TValue>>.GetEnumerator()
+        System.Collections.Generic.IEnumerator<Pair<TKey, TValue>> System.Collections.Generic.IEnumerable<Pair<TKey, TValue>>.GetEnumerator()
         {
             int i = 0;
             while (i < size)

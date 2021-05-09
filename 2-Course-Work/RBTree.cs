@@ -44,7 +44,7 @@ namespace RBTree
             }
         }
     }
-    public class RBTree<TKey, TValue> where TKey : IComparable 
+    public class RBTree<TKey, TValue> : System.Collections.Generic.IEnumerable<RBTreeNode<TKey, TValue>> where TKey : IComparable 
     {
         public RBTreeNode<TKey, TValue> First
         {
@@ -197,6 +197,7 @@ namespace RBTree
                 return;
             }
             Swap(ref u.key, ref v.key);
+            Swap(ref u.list, ref v.list);
             Remove(u);
         }
         private void FixDoubleBlack(RBTreeNode<TKey, TValue> x)
@@ -375,6 +376,45 @@ namespace RBTree
             PrintInOrder(ptr.left);
             ptr.Print();
             PrintInOrder(ptr.right);
+        }
+
+        System.Collections.Generic.IEnumerator<RBTreeNode<TKey, TValue>> System.Collections.Generic.IEnumerable<RBTreeNode<TKey, TValue>>.GetEnumerator()
+        {
+            if (root == null) yield break;
+            DoubleLinkedList<RBTreeNode<TKey, TValue>> stack =
+                new DoubleLinkedList<RBTreeNode<TKey, TValue>>();
+            RBTreeNode<TKey, TValue> node = root;
+            while (node != null || stack.Size > 0)
+            {
+                while (node != null)
+                {
+                    stack.AddFirst(node);
+                    node = node.left;
+                }
+                node = stack.First.Key;
+                yield return node;
+                node = node.right;
+                stack.Remove(stack.First.Key);                
+            }
+        }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            if (root == null) yield break;
+            DoubleLinkedList<RBTreeNode<TKey, TValue>> stack =
+                new DoubleLinkedList<RBTreeNode<TKey, TValue>>();
+            RBTreeNode<TKey, TValue> node = root;
+            while (node != null || stack.Size > 0)
+            {
+                while (node != null)
+                {
+                    stack.AddFirst(node);
+                    node = node.left;
+                }
+                node = stack.First.Key;
+                yield return node.Key;
+                node = node.right;
+                stack.Remove(stack.First.Key);
+            }
         }
     }
 }
