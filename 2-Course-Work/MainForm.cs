@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
+using DoubleLinkedList;
 using OAHashtable;
 using RBTree;
 using ChainHashtable;
@@ -17,16 +18,21 @@ namespace _2_Course_Work
     public partial class MainForm : Form
     {
         private const string CORRECT_USER_INPUT = "^[a-zA-Zа-яА-Я0-9.,-:;'\"()!? ]*$";
-        private const int FILE_OUTPUT_SPACE = 0;
+        private const int FILE_OUTPUT_SPACE = 36;
         private bool saved = true;
         protected internal OAHashtable<string, string> OAHT = new OAHashtable<string, string>();
         protected internal RBTree<int, int> RBT = new RBTree<int, int>();
         protected internal ChainHashtable<string, string> CHT = new ChainHashtable<string, string>(50);
+        /// <summary>
+        /// Дерево с названиями и строками в общей структуре, содержащими данное название.
+        /// Необходимо для быстрого поиска вхождения названий в структуре при удалении из справочника.
+        /// </summary>
+        protected internal RBTree<string, int> StructureNames = new RBTree<string, int>();
         private StructureForm structureForm = new StructureForm();
         public MainForm()
         {
             InitializeComponent();
-            structureForm.Owner = this;
+            structureForm.Owner = this;            
         }
         private void LoadFile()
         {            
@@ -36,6 +42,7 @@ namespace _2_Course_Work
             DialogResult result = openDialog.ShowDialog();
             string line = "";
             string[] cells;
+            int index;
             if (result == DialogResult.OK)
             {
                 StreamReader reader;
@@ -65,34 +72,39 @@ namespace _2_Course_Work
                         line = CleanString(reader.ReadLine());
                         if (line.StartsWith("#")) continue;
                         cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
-                        RBT.Add(iter, int.Parse(cells[4]));
-                        StructureTable.Rows.Add(cells);
+                        RBT.Add(int.Parse(cells[4]), iter);
+                        index = StructureTable.Rows.Add(cells);
+                        StructureNames.Add(cells[0], index);
+                        iter++;
                     } 
 
                     while (!reader.ReadLine().StartsWith("#"));
                     line = reader.ReadLine();
                     while (!line.StartsWith("#")) // чтение название - жанр
                     {
-                        line = CleanString(reader.ReadLine());
+                        line = CleanString(line);
                         if (line.StartsWith("#")) continue;
                         cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
                         OAHT.Add(cells[0], cells[1]);
                         NameGenreTable.Rows.Add(cells);
+                        line = reader.ReadLine();
                     } 
 
                     while (!reader.ReadLine().StartsWith("#"));
                     line = reader.ReadLine();
                     while (!line.StartsWith("#")) // чтение название - автор
                     {
-                        line = CleanString(reader.ReadLine());
+                        line = CleanString(line);
                         if (line.StartsWith("#")) continue;
                         cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
                         CHT.AddElem(cells[0], cells[1]);
                         if (OAHT.Contains(cells[0])) structureForm.Name_comboBox.Items.Add(cells[0]);
                         NameAuthorTable.Rows.Add(cells);
+                        line = reader.ReadLine();
                     } 
 
                     reader.Close();
+                    saved = true;
                     UpdateInfo("Справочники успешно загружены");
                 }                
                 catch (Exception)
@@ -124,10 +136,11 @@ namespace _2_Course_Work
                 StreamWriter writer = new StreamWriter(saveDialog.FileName);
                 writer.WriteLine($"# Общая структура");
                 SaveGrid(StructureTable, writer);
-                writer.WriteLine($"\n# Название — жанр");
+                writer.WriteLine($"# Конец общей структуры\n\n# Справочник название-жанр");
                 SaveGrid(NameGenreTable, writer);
-                writer.WriteLine($"\n# Название — автор");
+                writer.WriteLine($"# Конец справочника\n\n# Справочник название-автор");
                 SaveGrid(NameAuthorTable, writer);
+                writer.WriteLine($"# Конец справочника");
                 writer.Close();
                 saved = true;
                 UpdateInfo("Справочник успешно сохранен");
@@ -168,6 +181,9 @@ namespace _2_Course_Work
         {
             int index = StructureTable.Rows.Add(name, author, genre, publisher, year);
             RBT.Add(year, index);
+            StructureNames.Add(name, index);
+            // добавить добавление в авл-дерево
+            saved = false;
             UpdateInfo("Запись успешно добавлена");
         }
         private void ChangeName(string name, string prevName, string genre, DataGridViewCell cell)
@@ -243,7 +259,7 @@ namespace _2_Course_Work
                     }
                 }
             }
-            if (tabControl.SelectedIndex == 1) // справочник Влада
+            else if (tabControl.SelectedIndex == 1) // справочник Влада
             {
                 var form = new NameGenreForm("Добавить");
                 DialogResult result = form.ShowDialog();
@@ -281,7 +297,7 @@ namespace _2_Course_Work
                     }
                 }
             }
-            if (tabControl.SelectedIndex == 2) // справочник Полины
+            else  // справочник Полины
             {
                 var form = new NameAuthorForm("Добавить");
                 DialogResult result = form.ShowDialog();                
@@ -322,7 +338,7 @@ namespace _2_Course_Work
         }
         private void Change_button_Click(object sender, EventArgs e)
         {
-            if (tabControl.SelectedIndex == 1)
+            if (tabControl.SelectedIndex == 1) // справочник Влада
             {
                 if (NameGenreTable.CurrentCell == null)
                 {
@@ -422,7 +438,6 @@ namespace _2_Course_Work
                 if (!NotSavedButContinue()) return;
             }
             LoadFile();
-            saved = true;            
         }
         private void findByYears_button_Click(object sender, EventArgs e)
         {
@@ -434,6 +449,53 @@ namespace _2_Course_Work
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!saved && WantToSave()) SaveFile();
+        }
+        private void Delete_button_Click(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedIndex == 0) // структура
+            {
+                if (StructureTable.SelectedCells.Count == 0)
+                {
+                    UpdateInfo("Запись не удалена. Пожалуйста, выберете ячейку");
+                    return;
+                }
+                var row = StructureTable.SelectedCells[0].OwningRow.Cells;
+                UpdateInfo($"Запись [{row[0].Value}/{row[1].Value}/{row[2].Value}/{row[3].Value}/{row[4].Value}] удалена");
+                StructureTable.Rows.Remove(StructureTable.SelectedCells[0].OwningRow);
+                RBT.Remove(int.Parse(row[4].Value.ToString()));
+                // добавить удаление из авл-дерева
+                saved = false;
+            }
+            else if (tabControl.SelectedIndex == 1) // справочник Влада
+            {
+                if (NameGenreTable.SelectedCells.Count == 0)
+                {
+                    UpdateInfo("Запись не удалена. Пожалуйста, выберете ячейку");
+                    return;
+                }
+                string name = NameGenreTable.SelectedCells[0].OwningRow.Cells[0].Value.ToString();
+                var indices = StructureNames.GetValues(name);
+                DataGridViewRow row;
+                if (indices.Size != 0)
+                {
+                    DialogResult result = MessageBox.Show($"С именем \"{name}\" найдены записи в общей структуре ({indices.Size}), которые" +
+                        $" подлежат удалению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.No) return;
+                }
+                foreach (var rowIndex in indices)
+                {
+                    row = StructureTable.Rows[rowIndex.Key];
+                    RBT.GetValues(int.Parse(row.Cells[4].Value.ToString())).Remove(rowIndex.Key);
+                    StructureTable.Rows.Remove(StructureTable.Rows[rowIndex.Key]);
+                }
+                OAHT.Delete(name);
+                NameGenreTable.Rows.Remove(NameGenreTable.SelectedCells[0].OwningRow);
+                structureForm.Name_comboBox.Items.Remove(name);
+            }
+            else // справочник Полины
+            {
+
+            }
         }
     }
 }
