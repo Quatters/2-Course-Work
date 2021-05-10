@@ -34,7 +34,7 @@ namespace _2_Course_Work
         public MainForm()
         {
             InitializeComponent();
-            structureForm.Owner = this;            
+            structureForm.Owner = this;
         }
         private void LoadFile()
         {            
