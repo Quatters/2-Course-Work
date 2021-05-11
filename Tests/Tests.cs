@@ -5,6 +5,7 @@ using RBTree;
 using OAHashtable;
 using DoubleLinkedList;
 using ChainHashtable;
+using BinaryTree;
 
 namespace Tests
 {
@@ -116,23 +117,26 @@ namespace Tests
         }
         static void Main(string[] args)
         {
-            ChainHashtable<string, string> table = new ChainHashtable<string, string>();
-            string name = "faf";
-            string author = "jj";
-            table.AddElem(name, author);
-            name = "Трое в лодке, не считая собаки";
-            author = "Джером К. Джером";
-            table.AddElem(name, author);
-            name = "ffa";
-            author = "jj";
-            table.AddElem(name, author);
-            table.Print();
-            table.AddElem(name, author);
-            table.Print();
-            name = "faf";
-            table.DeleteElem(name);
-            table.Print();
-
+            BinaryTree<double, double> tree = new BinaryTree<double, double>();
+            tree.Add(20, 1);
+            tree.Add(15, 1);
+            tree.Add(10, 1);
+            tree.Add(11, 1);
+            tree.Add(10.5, 1);
+            tree.Add(14, 1);
+            tree.Add(13, 1);
+            tree.Add(12, 1);
+            tree.Add(13.5, 1);
+            foreach (var node in tree)
+            {
+                Console.WriteLine(node.Key);
+            }
+            Console.WriteLine();
+            tree.Remove(15, 1);
+            foreach (var node in tree)
+            {
+                Console.WriteLine(node.Key);
+            }
         }
     }
 }
