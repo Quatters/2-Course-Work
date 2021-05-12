@@ -38,7 +38,7 @@ namespace _2_Course_Work
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.Filter = "Справочник (*.txt)|*.txt";
             //openDialog.InitialDirectory = "C:\\Users\\mi\\source\\repos\\2-Course-Work\\saves";
-            openDialog.InitialDirectory = Path.Combine(new FileInfo(Application.StartupPath).DirectoryName);
+            openDialog.InitialDirectory = Path.Combine(new FileInfo(Application.ExecutablePath).DirectoryName);
             DialogResult result = openDialog.ShowDialog();
             string line = "";
             string[] cells;
@@ -123,7 +123,7 @@ namespace _2_Course_Work
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.Filter = "Справочник (*.txt)|*.txt";
-            saveDialog.InitialDirectory = Path.Combine(new FileInfo(Application.StartupPath).DirectoryName);
+            saveDialog.InitialDirectory = Path.Combine(new FileInfo(Application.ExecutablePath).DirectoryName);
             DialogResult result = saveDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -290,6 +290,12 @@ namespace _2_Course_Work
         {
             if (tabControl.SelectedIndex == 0) // структура
             {
+                if (structureForm.Name_comboBox.Items.Count == 0)
+                {
+                    MessageBox.Show("Невозможно добавить запись в структуру. Необходимо заполнить справочники.", 
+                        "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
                 structureForm.ResetToDefault();
                 structureForm.Text = "Добавить";
                 DialogResult result = structureForm.ShowDialog();
@@ -609,7 +615,7 @@ namespace _2_Course_Work
             if (!saved)
             {
                 var result = MessageBox.Show("Текущий справочник не сохранен. Хотите сохранить?", "Предупреждение",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 if (result == DialogResult.Cancel)
                 {
                     e.Cancel = true;
