@@ -41,7 +41,8 @@ namespace _2_Course_Work
         }
         private void Find_button_Click(object sender, EventArgs e)
         {
-            DoubleLinkedList<DataGridViewRow> foundYears = GetYearRows((int)fromYear_numeric.Value, (int)toYear_numeric.Value);
+            var foundYears = GetYearRows((int)fromYear_numeric.Value, (int)toYear_numeric.Value);
+            var foundPublishers = GetPublisherRows(publisher_textBox.Text);
             mainForm.tabControl.SelectedIndex = 0;
             mainForm.StructureTable.Rows.Clear();
             if (byYears_checkbox.Checked && !byPublisher_checkbox.Checked) // выбран только год
@@ -49,12 +50,15 @@ namespace _2_Course_Work
                 foreach (var row in foundYears) mainForm.StructureTable.Rows.Add(row.Key);
             }
             else if (!byYears_checkbox.Checked && byPublisher_checkbox.Checked) // выбран только издатель
-            {
-
+            {                
+                foreach (var row in foundPublishers) mainForm.StructureTable.Rows.Add(row.Key);
             }
             else // выбрано все
             {
-
+                foreach (var row in foundPublishers)
+                {
+                    if (foundYears.Contains(row.Key)) mainForm.StructureTable.Rows.Add(row.Key);
+                }
             }
         }
         private void SaveSettings()
@@ -86,7 +90,7 @@ namespace _2_Course_Work
             DoubleLinkedList<DataGridViewRow> currentList = new DoubleLinkedList<DataGridViewRow>();
             for (int i = from; i <= to; i++)
             {
-                currentList = mainForm.RBT.GetValues(i);
+                currentList = mainForm.YearTree.GetValues(i);
                 foreach (var year in currentList)
                 {
                     result.AddLast(year.Key);
@@ -94,6 +98,7 @@ namespace _2_Course_Work
             }
             return result;
         }
+        private DoubleLinkedList<DataGridViewRow> GetPublisherRows(string publisher) => mainForm.PublisherTree.GetValues(publisher);
         private void FindForm_Load(object sender, EventArgs e)
         {            
             mainForm = (MainForm)Owner;

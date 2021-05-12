@@ -12,6 +12,7 @@ using DoubleLinkedList;
 using OAHashtable;
 using RBTree;
 using ChainHashtable;
+using BinaryTree;
 
 namespace _2_Course_Work
 {
@@ -22,14 +23,15 @@ namespace _2_Course_Work
         private bool saved = true;
         protected internal bool findFormShown = false;
         protected internal bool debugFormShown = false;
-        protected internal OAHashtable<string, string> OAHT = new OAHashtable<string, string>();
-        protected internal RBTree<int, DataGridViewRow> RBT = new RBTree<int, DataGridViewRow>();
-        protected internal ChainHashtable<string, string> CHT = new ChainHashtable<string, string>(50);
+        protected internal OAHashtable<string, DataGridViewRow> NameGenreHT = new OAHashtable<string, DataGridViewRow>();
+        protected internal RBTree<int, DataGridViewRow> YearTree = new RBTree<int, DataGridViewRow>();
+        protected internal ChainHashtable<string, DataGridViewRow> NameAuthorHT = new ChainHashtable<string, DataGridViewRow>(50);
+        protected internal BinaryTree<string, DataGridViewRow> PublisherTree = new BinaryTree<string, DataGridViewRow>();
         /// <summary>
         /// Дерево с названиями и строками в общей структуре, содержащими данное название.
         /// Необходимо для быстрого поиска вхождения названий в структуре при удалении из справочника.
         /// </summary>
-        protected internal RBTree<string, DataGridViewRow> StructureNames = new RBTree<string, DataGridViewRow>();
+        protected internal RBTree<string, DataGridViewRow> NameTree = new RBTree<string, DataGridViewRow>();
         private StructureForm structureForm = new StructureForm();
         public MainForm()
         {
@@ -68,8 +70,9 @@ namespace _2_Course_Work
                         if (line.StartsWith("#")) continue;
                         cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');                        
                         index = StructureTable.Rows.Add(cells);
-                        RBT.Add(int.Parse(cells[4]), StructureTable.Rows[index]);
-                        StructureNames.Add(cells[0], StructureTable.Rows[index]);
+                        YearTree.Add(int.Parse(cells[4]), StructureTable.Rows[index]);
+                        PublisherTree.Add(cells[3], StructureTable.Rows[index]);
+                        NameTree.Add(cells[0], StructureTable.Rows[index]);
                         iter++;
                     } 
 
@@ -79,9 +82,9 @@ namespace _2_Course_Work
                     {
                         line = CleanString(line);
                         if (line.StartsWith("#")) continue;
-                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
-                        OAHT.Add(cells[0], cells[1]);
-                        NameGenreTable.Rows.Add(cells);
+                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');                        
+                        index = NameGenreTable.Rows.Add(cells);
+                        NameGenreHT.Add(cells[0], NameGenreTable.Rows[index]);
                         line = reader.ReadLine();
                     } 
 
@@ -91,16 +94,16 @@ namespace _2_Course_Work
                     {
                         line = CleanString(line);
                         if (line.StartsWith("#")) continue;
-                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
-                        CHT.AddElem(cells[0], cells[1]);
-                        if (OAHT.Contains(cells[0])) structureForm.Name_comboBox.Items.Add(cells[0]);
-                        NameAuthorTable.Rows.Add(cells);
+                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');                        
+                        if (NameGenreHT.Contains(cells[0])) structureForm.Name_comboBox.Items.Add(cells[0]);
+                        index = NameAuthorTable.Rows.Add(cells);
+                        NameAuthorHT.Add(cells[0], NameAuthorTable.Rows[index]);
                         line = reader.ReadLine();
                     } 
 
                     reader.Close();
                     saved = true;
-                    UpdateInfo("Справочники успешно загружены");
+                    UpdateInfo("Файл успешно загружен");
                 }                
                 catch (Exception)
                 {
@@ -145,76 +148,155 @@ namespace _2_Course_Work
         private bool HasIncorrectSymbols(string text) => !System.Text.RegularExpressions.Regex.IsMatch(text, CORRECT_USER_INPUT);
         private void UpdateInfo(string text) => toolStripStatusLabel.Text = text;
         private void NameGenreAdd(string name, string genre)
-        {
-            if (OAHT.Contains(name))
-            {
-                UpdateInfo("Запись не добавлена. Указанная книга уже есть в справочнике");
-            }
-            else
-            {
-                OAHT.Add(name, genre);
-                NameGenreTable.Rows.Add(name, genre);
-                saved = false;
-                UpdateInfo("Запись успешно добавлена");
-            }
+        {            
+            int index = NameGenreTable.Rows.Add(name, genre);
+            NameGenreHT.Add(name, NameGenreTable.Rows[index]);
+            saved = false;
+            if (NameAuthorHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
+            UpdateInfo("Запись успешно добавлена");
         }
         private void NameAuthorAdd(string name, string author)
         {
-            if (CHT.Contains(name))
-            {
-                UpdateInfo("Запись не добавлена. Указанная книга уже есть в справочнике");
-            }
-            else
-            {
-                CHT.AddElem(name, author);
-                NameAuthorTable.Rows.Add(name, author);
-                saved = false;
-                UpdateInfo("Запись успешно добавлена");
-            }
+            int index = NameAuthorTable.Rows.Add(name, author);
+            NameAuthorHT.Add(name, NameAuthorTable.Rows[index]);            
+            saved = false;
+            if (NameGenreHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
+            UpdateInfo("Запись успешно добавлена");
         }
         private void StructureAdd(string name, string author, string genre, string publisher, int year)
         {
             int index = StructureTable.Rows.Add(name, author, genre, publisher, year);
-            RBT.Add(year, StructureTable.Rows[index]);
-            StructureNames.Add(name, StructureTable.Rows[index]);
-            // добавить добавление в авл-дерево
+            YearTree.Add(year, StructureTable.Rows[index]);
+            NameTree.Add(name, StructureTable.Rows[index]);
+            PublisherTree.Add(publisher, StructureTable.Rows[index]);
             saved = false;
-            UpdateInfo("Запись успешно добавлена");
+            UpdateInfo("Запись добавлена");
         }
-        private void ChangeName(string name, string prevName, string genre, DataGridViewCell cell)
+        private void NameGenreChange(string name, string genre, DataGridViewRow row)
         {
-            if (name == prevName)
+            string oldName = row.Cells[0].Value.ToString();
+            string oldGenre = row.Cells[1].Value.ToString();
+            if (name == oldName && genre == oldGenre)
             {
                 UpdateInfo("Запись не изменена");
+                return;
             }
-            else
+            if (genre != oldGenre) // изменен жанр
             {
-                if (OAHT.Contains(name))
+                var rowsToChange = NameTree.GetValues(oldName);
+                if (rowsToChange.Size != 0)
                 {
-                    UpdateInfo("Запись не изменена. Указанная книга уже есть в справочнике");
-                    return;
+                    DialogResult result = MessageBox.Show($"С жанром \"{oldGenre}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
+                        $" подлежат изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.No) return;
                 }
-                OAHT.Delete(prevName);
-                OAHT.Add(name, genre);
-                cell.Value = name;
-                saved = false;
-                UpdateInfo("Запись успешно изменена");
+                foreach (var rowToChange in rowsToChange)
+                {
+                    rowToChange.Key.Cells[2].Value = genre;
+                }
+                row.Cells[1].Value = genre;
             }
-            
+            if (name != oldName) // изменено название
+            {
+                var rowsToChange = NameTree.GetValues(oldName);
+                if (NameAuthorHT.Contains(oldName))
+                {
+                    DialogResult resultNameAuthorTable = MessageBox.Show($"С названием \"{oldName}\" найдена запись в справочнике Название/автор, которая" +
+                            $" подлежит изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (resultNameAuthorTable == DialogResult.No) return;
+                    string author = "";
+                    foreach (DataGridViewRow naRow in NameAuthorTable.Rows)
+                    {
+                        if (naRow.Cells[0].Value.ToString() == oldName)
+                        {
+                            naRow.Cells[0].Value = name;
+                            author = naRow.Cells[1].Value.ToString();
+                            break;
+                        }
+                    }
+                    NameAuthorHT.Delete(oldName);
+                    NameAuthorHT.Add(name, row);
+                    if (rowsToChange.Size != 0)
+                    {                        
+                        DialogResult resultStructure = MessageBox.Show($"С названием \"{oldName}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
+                            $" подлежат изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (resultStructure == DialogResult.No) return;
+                        NameTree.RemoveKey(oldName);
+                        foreach (var rowToChange in rowsToChange)
+                        {
+                            rowToChange.Key.Cells[0].Value = name;
+                            NameTree.Add(name, rowToChange.Key);
+                        }
+                    }
+                }
+                NameGenreHT.Delete(oldName);
+                NameGenreHT.Add(name, row);
+                row.Cells[0].Value = name;                
+            }
+            UpdateInfo($"Запись [{oldName}/{oldGenre}] изменена");
         }
-        private void ChangeGenre(string name, string genre, string prevGenre, DataGridViewCell cell)
+        private void NameAuthorChange(string name, string author, DataGridViewRow row)
         {
-            if (genre == prevGenre)
+            string oldName = row.Cells[0].Value.ToString();
+            string oldAuthor = row.Cells[1].Value.ToString();
+            if (name == oldName && author == oldAuthor)
             {
                 UpdateInfo("Запись не изменена");
+                return;
             }
-            else
+            if (author != oldAuthor) // изменен жанр
             {
-                OAHT.GetPair(name).Value = genre;
-                cell.Value = genre;
-                saved = false;
-                UpdateInfo("Запись успешно изменена");
+                var rowsToChange = NameTree.GetValues(oldName);
+                if (rowsToChange.Size != 0)
+                {
+                    DialogResult result = MessageBox.Show($"С автором \"{oldAuthor}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
+                        $" подлежат изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.No) return;
+                }
+                foreach (var rowToChange in rowsToChange)
+                {
+                    rowToChange.Key.Cells[1].Value = author;
+                }
+                row.Cells[1].Value = author;
             }
+            if (name != oldName) // изменено название
+            {
+                var rowsToChange = NameTree.GetValues(oldName);
+                if (NameAuthorHT.Contains(oldName))
+                {
+                    DialogResult resultNameAuthorTable = MessageBox.Show($"С названием \"{oldName}\" найдена запись в справочнике Название/автор, которая" +
+                            $" подлежит изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (resultNameAuthorTable == DialogResult.No) return;
+                    string genre = "";
+                    foreach (DataGridViewRow ngRow in NameGenreTable.Rows)
+                    {
+                        if (ngRow.Cells[0].Value.ToString() == oldName)
+                        {
+                            ngRow.Cells[0].Value = name;
+                            genre = ngRow.Cells[1].Value.ToString();
+                            break;
+                        }
+                    }
+                    NameGenreHT.Delete(oldName);
+                    NameGenreHT.Add(name, row);
+                    if (rowsToChange.Size != 0)
+                    {
+                        DialogResult resultStructure = MessageBox.Show($"С названием \"{oldName}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
+                            $" подлежат изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (resultStructure == DialogResult.No) return;
+                        NameTree.RemoveKey(oldName);
+                        foreach (var rowToChange in rowsToChange)
+                        {
+                            rowToChange.Key.Cells[0].Value = name;
+                            NameTree.Add(name, rowToChange.Key);
+                        }
+                    }
+                }
+                NameAuthorHT.Delete(oldName);
+                NameAuthorHT.Add(name, row);
+                row.Cells[0].Value = name;
+            }
+            UpdateInfo($"Запись [{oldName}/{oldAuthor}] изменена");
         }
         private void Add_button_Click(object sender, EventArgs e)
         {
@@ -233,12 +315,12 @@ namespace _2_Course_Work
                     {
                         if (structureForm.Name_comboBox.Text == "")
                         {
-                            MessageBox.Show("Пожалуйста, заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Пожалуйста, заполните название.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             result = structureForm.ShowDialog();
                         }
                         else if (structureForm.Publisher_textBox.Text == "")
                         {
-                            MessageBox.Show("Пожалуйста, заполните издательство", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Пожалуйста, заполните издательство.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             result = structureForm.ShowDialog();
                         }
                         else
@@ -267,12 +349,12 @@ namespace _2_Course_Work
                     {
                         if (form.Name_textBox.Text == "")
                         {
-                            MessageBox.Show("Пожалуйста, заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Пожалуйста, заполните название.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             result = form.ShowDialog();
                         }
                         else if (form.Genre_textBox.Text == "")
                         {
-                            MessageBox.Show("Пожалуйста, заполните жанр", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Пожалуйста, заполните жанр.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             result = form.ShowDialog();
                         }
                         else if (HasIncorrectSymbols(form.Name_textBox.Text) || HasIncorrectSymbols(form.Genre_textBox.Text))
@@ -285,8 +367,14 @@ namespace _2_Course_Work
                         {
                             name = form.Name_textBox.Text;
                             genre = form.Genre_textBox.Text;
-                            NameGenreAdd(name, genre);
-                            if (CHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
+                            if (NameGenreHT.Contains(name))
+                            {
+                                MessageBox.Show($"Запись с именем \"{name}\" уже находится в справочнике.",
+                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                result = form.ShowDialog();
+                                continue;
+                            }
+                            NameGenreAdd(name, genre);                            
                             success = true;
                         }
                     }
@@ -323,8 +411,14 @@ namespace _2_Course_Work
                         {
                             name = form.Name_textBox.Text;
                             author = form.Author_textBox.Text;
-                            NameAuthorAdd(name, author);
-                            if (OAHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
+                            if (NameAuthorHT.Contains(name))
+                            {
+                                MessageBox.Show($"Запись с именем \"{name}\" уже находится в справочнике.",
+                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                result = form.ShowDialog();
+                                continue;
+                            }
+                            NameAuthorAdd(name, author);                            
                             success = true;
                         }
                     }
@@ -360,7 +454,7 @@ namespace _2_Course_Work
                     {
                         if (structureForm.Publisher_textBox.Text == "")
                         {
-                            MessageBox.Show("Пожалуйста, заполните издательство", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Пожалуйста, заполните издательство.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             result = structureForm.ShowDialog();
                         }
                         else
@@ -368,10 +462,16 @@ namespace _2_Course_Work
                             string name = structureForm.Name_comboBox.Text;
                             string publisher = structureForm.Publisher_textBox.Text;
                             int year = (int)structureForm.Year_numeric.Value;
+                            if (name == oldName && publisher == oldPublisher && year == oldYear)
+                            {
+                                UpdateInfo("Запись не изменена");
+                                success = true;
+                                continue;
+                            }
                             if (name != oldName)
                             {
-                                StructureNames.GetValues(name).Remove(StructureTable.Rows[rowIndex]);
-                                StructureNames.Add(name, StructureTable.Rows[rowIndex]);
+                                NameTree.GetValues(name).Remove(StructureTable.Rows[rowIndex]);
+                                NameTree.Add(name, StructureTable.Rows[rowIndex]);
                                 row.Cells[0].Value = name;
                                 row.Cells[1].Value = structureForm.Author_textBox.Text;
                                 row.Cells[2].Value = structureForm.Genre_textBox.Text;
@@ -383,8 +483,8 @@ namespace _2_Course_Work
                             }
                             if (year != oldYear)
                             {
-                                RBT.GetValues(year).Remove(StructureTable.Rows[rowIndex]);
-                                RBT.Add(year, StructureTable.Rows[rowIndex]);
+                                YearTree.GetValues(year).Remove(StructureTable.Rows[rowIndex]);
+                                YearTree.Add(year, StructureTable.Rows[rowIndex]);
                                 row.Cells[4].Value = structureForm.Year_numeric.Value;
                             }
                             success = true;
@@ -400,38 +500,87 @@ namespace _2_Course_Work
                     UpdateInfo("Пожалуйста, выберете ячейку");
                     return;
                 }
-                var cell = NameGenreTable.CurrentCell;
+                var row = NameGenreTable.CurrentCell.OwningRow;
                 string prevName = NameGenreTable.CurrentCell.OwningRow.Cells[0].Value.ToString();
                 string prevGenre = NameGenreTable.CurrentCell.OwningRow.Cells[1].Value.ToString();
                 string name = prevName;
-                string genre = NameGenreTable.CurrentCell.OwningRow.Cells[1].Value.ToString();
-                bool nameChange = NameGenreTable.CurrentCell.ColumnIndex == 0;
+                string genre = prevGenre;
                 var form = new NameGenreForm("Изменить");
                 form.Name_textBox.Text = name;
                 form.Genre_textBox.Text = genre;
-                if (nameChange)
-                {
-                    form.Genre_textBox.ReadOnly = true;
-                }
-                else
-                {
-                    form.Name_textBox.ReadOnly = true;
-                    form.Name_textBox.TabIndex = 2;
-                    form.Genre_textBox.TabIndex = 1;
-                }
                 DialogResult result = form.ShowDialog();
                 bool success = false;
-                if (nameChange)
+                while (!success)
                 {
-                    while (!success)
+                    if (result == DialogResult.Cancel) return;
+                    if (result == DialogResult.OK)
                     {
-                        if (result == DialogResult.Cancel) return;
-                        if (result == DialogResult.OK && form.Name_textBox.Text == "")
+                        if (form.Name_textBox.Text == "")
                         {
-                            MessageBox.Show("Пожалуйста, заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Пожалуйста, заполните название.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             result = form.ShowDialog();
                         }
-                        else if (result == DialogResult.OK && HasIncorrectSymbols(form.Name_textBox.Text))
+                        else if (form.Genre_textBox.Text == "")
+                        {
+                            MessageBox.Show("Пожалуйста, заполните жанр.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            result = form.ShowDialog();
+                        }
+                        else if (HasIncorrectSymbols(form.Name_textBox.Text) || HasIncorrectSymbols(form.Genre_textBox.Text))
+                        {
+                            MessageBox.Show("Обнаружен недопустимый символ.\nВ полях можно использовать буквы, цифры и знаки препинания.",
+                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            result = form.ShowDialog();
+                        }                        
+                        else
+                        {
+                            name = form.Name_textBox.Text;
+                            genre = form.Genre_textBox.Text;
+                            if (prevName != name && NameGenreHT.Contains(name))
+                            {
+                                MessageBox.Show($"Запись с именем \"{name}\" уже находится в справочнике.",
+                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                result = form.ShowDialog();
+                                continue;
+                            }
+                            NameGenreChange(name, genre, row);
+                            success = true;
+                        }
+                    }                    
+                }
+            }
+            else // справочник Полины
+            {
+                if (NameAuthorTable.CurrentCell == null)
+                {
+                    UpdateInfo("Пожалуйста, выберете ячейку");
+                    return;
+                }
+                var row = NameAuthorTable.CurrentCell.OwningRow;
+                string prevName = NameAuthorTable.CurrentCell.OwningRow.Cells[0].Value.ToString();
+                string prevAuthor = NameAuthorTable.CurrentCell.OwningRow.Cells[1].Value.ToString();
+                string name = prevName;
+                string author = prevAuthor;
+                var form = new NameAuthorForm("Изменить");
+                form.Name_textBox.Text = name;
+                form.Author_textBox.Text = author;
+                DialogResult result = form.ShowDialog();
+                bool success = false;
+                while (!success)
+                {
+                    if (result == DialogResult.Cancel) return;
+                    if (result == DialogResult.OK)
+                    {
+                        if (form.Name_textBox.Text == "")
+                        {
+                            MessageBox.Show("Пожалуйста, заполните название.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            result = form.ShowDialog();
+                        }
+                        else if (form.Author_textBox.Text == "")
+                        {
+                            MessageBox.Show("Пожалуйста, заполните автора.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            result = form.ShowDialog();
+                        }
+                        else if (HasIncorrectSymbols(form.Name_textBox.Text) || HasIncorrectSymbols(form.Author_textBox.Text))
                         {
                             MessageBox.Show("Обнаружен недопустимый символ.\nВ полях можно использовать буквы, цифры и знаки препинания.",
                                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -440,33 +589,15 @@ namespace _2_Course_Work
                         else
                         {
                             name = form.Name_textBox.Text;
-                            ChangeName(name, prevName, genre, cell);
-                            structureForm.Name_comboBox.Items.Remove(prevName);
-                            if (CHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
-                            success = true;
-                        }
-                    }
-                }
-                else
-                {
-                    while (!success)
-                    {
-                        if (result == DialogResult.Cancel) return;
-                        if (result == DialogResult.OK && form.Genre_textBox.Text == "")
-                        {
-                            MessageBox.Show("Пожалуйста, заполните жанр", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            result = form.ShowDialog();
-                        }
-                        else if (result == DialogResult.OK && HasIncorrectSymbols(form.Genre_textBox.Text))
-                        {
-                            MessageBox.Show("Обнаружен недопустимый символ.\nВ полях можно использовать буквы, цифры и знаки препинания.",
+                            author = form.Author_textBox.Text;
+                            if (prevName != name && NameAuthorHT.Contains(name))
+                            {
+                                MessageBox.Show($"Запись с именем \"{name}\" уже находится в справочнике.",
                                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            result = form.ShowDialog();
-                        }
-                        else
-                        {
-                            genre = form.Genre_textBox.Text;
-                            ChangeGenre(name, genre, prevGenre, cell);
+                                result = form.ShowDialog();
+                                continue;
+                            }
+                            NameAuthorChange(name, author, row);
                             success = true;
                         }
                     }
@@ -516,11 +647,13 @@ namespace _2_Course_Work
                     UpdateInfo("Пожалуйста, выберете ячейку");
                     return;
                 }
-                var row = StructureTable.SelectedCells[0].OwningRow.Cells;
-                UpdateInfo($"Запись [{row[0].Value}/{row[1].Value}/{row[2].Value}/{row[3].Value}/{row[4].Value}] удалена");
-                StructureTable.Rows.Remove(StructureTable.SelectedCells[0].OwningRow);
-                RBT.Remove(int.Parse(row[4].Value.ToString()));
-                // добавить удаление из авл-дерева
+                var row = StructureTable.SelectedCells[0].OwningRow;
+                var rowCells = StructureTable.SelectedCells[0].OwningRow.Cells;
+                PublisherTree.Remove(rowCells[3].Value.ToString(), row);
+                YearTree.Remove(int.Parse(rowCells[4].Value.ToString()), row);
+                NameTree.Remove(rowCells[0].Value.ToString(), row);
+                UpdateInfo($"Запись [{rowCells[0].Value}/{rowCells[1].Value}/{rowCells[2].Value}/{rowCells[3].Value}/{rowCells[4].Value}] удалена");
+                StructureTable.Rows.Remove(row);                
                 saved = false;
             }
             else if (tabControl.SelectedIndex == 1) // справочник Влада
@@ -532,7 +665,7 @@ namespace _2_Course_Work
                 }
                 string name = NameGenreTable.SelectedCells[0].OwningRow.Cells[0].Value.ToString();
                 string genre = NameGenreTable.SelectedCells[0].OwningRow.Cells[1].Value.ToString();
-                var rowsToRemove = StructureNames.GetValues(name);
+                var rowsToRemove = NameTree.GetValues(name);
                 if (rowsToRemove.Size != 0)
                 {
                     DialogResult result = MessageBox.Show($"С именем \"{name}\" найдены записи в общей структуре ({rowsToRemove.Size}), которые" +
@@ -540,23 +673,54 @@ namespace _2_Course_Work
                     if (result == DialogResult.No) return;
                 }
                 int yearToRemove;
+                string publisherToRemove;
                 foreach (var rowToRemove in rowsToRemove)
                 {
                     yearToRemove = int.Parse(rowToRemove.Key.Cells[4].Value.ToString());
-                    RBT.GetValues(yearToRemove).Remove(rowToRemove.Key);
-                    if (RBT.GetValues(yearToRemove).Size == 0) RBT.Remove(yearToRemove);
+                    publisherToRemove = rowToRemove.Key.Cells[3].Value.ToString();
+                    YearTree.Remove(yearToRemove, rowToRemove.Key);
+                    PublisherTree.Remove(publisherToRemove, rowToRemove.Key);
                     StructureTable.Rows.Remove(rowToRemove.Key);
                 }
-                OAHT.Delete(name);
+                NameGenreHT.Delete(name);
                 NameGenreTable.Rows.Remove(NameGenreTable.SelectedCells[0].OwningRow);
                 structureForm.Name_comboBox.Items.Remove(name);
-                StructureNames.Remove(name);
+                NameTree.RemoveKey(name);
                 saved = false;
                 UpdateInfo($"Запись [{name}/{genre}] удалена");
             }
             else // справочник Полины
             {
-
+                if (NameAuthorTable.SelectedCells.Count == 0)
+                {
+                    UpdateInfo("Пожалуйста, выберете ячейку");
+                    return;
+                }
+                string name = NameAuthorTable.SelectedCells[0].OwningRow.Cells[0].Value.ToString();
+                string author = NameAuthorTable.SelectedCells[0].OwningRow.Cells[1].Value.ToString();
+                var rowsToRemove = NameTree.GetValues(name);
+                if (rowsToRemove.Size != 0)
+                {
+                    DialogResult result = MessageBox.Show($"С именем \"{name}\" найдены записи в общей структуре ({rowsToRemove.Size}), которые" +
+                        $" подлежат удалению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.No) return;
+                }
+                int yearToRemove;
+                string publisherToRemove;
+                foreach (var rowToRemove in rowsToRemove)
+                {
+                    yearToRemove = int.Parse(rowToRemove.Key.Cells[4].Value.ToString());
+                    publisherToRemove = rowToRemove.Key.Cells[3].Value.ToString();
+                    YearTree.Remove(yearToRemove, rowToRemove.Key);
+                    PublisherTree.Remove(publisherToRemove, rowToRemove.Key);
+                    StructureTable.Rows.Remove(rowToRemove.Key);
+                }
+                NameAuthorHT.Delete(name);
+                NameAuthorTable.Rows.Remove(NameAuthorTable.SelectedCells[0].OwningRow);
+                structureForm.Name_comboBox.Items.Remove(name);
+                NameTree.RemoveKey(name);
+                saved = false;
+                UpdateInfo($"Запись [{name}/{author}] удалена");
             }
         }
         private void saveToolStripMenuItem_Click(object sender, EventArgs e) => SaveFile();
@@ -582,12 +746,12 @@ namespace _2_Course_Work
             StructureTable.Rows.Clear();
             NameGenreTable.Rows.Clear();
             NameAuthorTable.Rows.Clear();
-            OAHT.Clear();
-            RBT.Clear();
-            CHT.Clear();
-            StructureNames.Clear();
-            structureForm.Name_comboBox.Items.Clear();
-            // добавить очистку авл-дерева
+            NameGenreHT.Clear();
+            NameAuthorHT.Clear();
+            YearTree.Clear();
+            PublisherTree.Clear();
+            NameTree.Clear();            
+            structureForm.Name_comboBox.Items.Clear();            
         }
         private void openDebugFormToolStripMenuItem_Click(object sender, EventArgs e)
         {

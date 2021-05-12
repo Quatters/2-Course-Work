@@ -34,15 +34,6 @@ namespace RBTree
             return (left != null && left.color == Color.RED) ||
                 (right != null && right.color == Color.RED);
         }
-
-        // следующие методы необходимы только для теста в консоли
-        internal void Print()
-        {
-            if (this != null)
-            {
-                Console.WriteLine($"{key} ({list.Size})");
-            }
-        }
     }
     public class RBTree<TKey, TValue> : System.Collections.Generic.IEnumerable<RBTreeNode<TKey, TValue>> where TKey : IComparable 
     {
@@ -181,8 +172,8 @@ namespace RBTree
                 if (v == root)
                 {
                     v.key = u.key;
-                    v.left = null;
-                    v.right = null;
+                    v.list = u.list;
+                    v.left = v.right = null;
                     u = null; // delete u;
                 }
                 else
@@ -335,7 +326,15 @@ namespace RBTree
             return null;
         }
         public bool Contains(TKey key) => Find(key) == null;
-        public void Remove(TKey key)
+        public void Remove(TKey key, TValue value)
+        {
+            if (root == null) return;
+            RBTreeNode<TKey, TValue> ptr = Find(key);
+            if (ptr == null) return;
+            ptr.Value.Remove(value);
+            if (ptr.Value.Size == 0) Remove(ptr);
+        }
+        public void RemoveKey(TKey key)
         {
             if (root == null) return;
             RBTreeNode<TKey, TValue> ptr = Find(key);
@@ -352,30 +351,6 @@ namespace RBTree
                 DoubleLinkedList<TValue> list = new DoubleLinkedList<TValue>();
                 return list;
             }
-        }
-
-        // следующие методы необходимы только для теста в консоли
-        public void Draw() => Draw(root, 0);
-        private void Draw(RBTreeNode<TKey, TValue> ptr, int n)
-        {
-            if (ptr != null)
-            {
-                Draw(ptr.right, n + 1);
-                for (int i = 0; i < n; i++) Console.Write("   ");
-                Console.Write(ptr.key);
-                if (ptr.color == RBTreeNode<TKey, TValue>.Color.BLACK) Console.Write(" (B)");
-                else Console.Write(" (R)");
-                Console.WriteLine();
-                Draw(ptr.left, n + 1);
-            }
-        }
-        public void PrintInOrder() => PrintInOrder(root);
-        private void PrintInOrder(RBTreeNode<TKey, TValue> ptr)
-        {
-            if (ptr == null) return;
-            PrintInOrder(ptr.left);
-            ptr.Print();
-            PrintInOrder(ptr.right);
         }
 
         System.Collections.Generic.IEnumerator<RBTreeNode<TKey, TValue>> System.Collections.Generic.IEnumerable<RBTreeNode<TKey, TValue>>.GetEnumerator()

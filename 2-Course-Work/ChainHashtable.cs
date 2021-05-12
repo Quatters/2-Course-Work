@@ -1,38 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DoubleLinkedList;
+﻿using DoubleLinkedList;
 
 namespace ChainHashtable
 {
     public class Pair<TKey, TValue>
     {
-        public TKey Key { get; }
-        public TValue Value { get; }
+        public TKey Key { get; protected internal set; }
+        public TValue Value { get; protected internal set; }
         public Pair(TKey key, TValue value)
         {
             Key = key;
             Value = value;
         }
-
     }
 
-    public class ChainHashtable<TKey, TValue>
+    public class ChainHashtable<TKey, TValue> : System.Collections.Generic.IEnumerable<Pair<TKey, TValue>>
     {               
         private DoubleLinkedList<Pair<TKey, TValue>>[] hashtable;
-        int size;        
+        public int Size { get; private set; }
 
         public ChainHashtable(int size = 10)
         {
-            this.size = size;
+            this.Size = size;
             hashtable = new DoubleLinkedList<Pair<TKey, TValue>>[size];
         }
-
-
-        //Хэш-функция
-        private int Hash(TKey key)
+        protected internal int Hash(TKey key)
         {
             string str_key = key.ToString();
             //обработка строки
@@ -52,16 +43,14 @@ namespace ChainHashtable
                 rem = rem + (di % 10);
                 di = di / 10;
             } while (di != 0);
-            return rem % size;            
+            return rem % Size;            
         }
-
         public bool Contains(TKey key) => FindElem(key) != -1;
-        public int FindElem(Pair<TKey, TValue> pair)
+        private int FindElem(Pair<TKey, TValue> pair)
         {
             int index = Hash(pair.Key);
             return hashtable[index].Contains(pair) == false ? -1 : index;
         }
-
         public TValue GetValue(TKey key)
         {
             int index = FindElem(key);
@@ -77,7 +66,17 @@ namespace ChainHashtable
             }
             return default;
         }
-        public int FindElem(TKey key)
+        public Pair<TKey, TValue> GetPair(TKey key)
+        {
+            int index = FindElem(key);
+            if (index == -1) return null;
+            foreach (var node in hashtable[index])
+            {
+                if (node.Key.Key.Equals(key)) return node.Key;
+            }
+            return null;
+        } 
+        private int FindElem(TKey key)
         {            
             int index = Hash(key);
             if (hashtable[index] != null)
@@ -92,18 +91,12 @@ namespace ChainHashtable
             }            
             return -1;
         }
-
-        public void Clear()
-        {
-            hashtable = new DoubleLinkedList<Pair<TKey, TValue>>[size];
-        }
-
-        //добавление элемента
-        public void AddElem(Pair<TKey, TValue> pair)
+        public void Clear() => hashtable = new DoubleLinkedList<Pair<TKey, TValue>>[Size];
+        public void Add(Pair<TKey, TValue> pair)
         {
             if (Contains(pair.Key)) return;                    
             int index = Hash(pair.Key);
-            if(hashtable[index] == null || hashtable[index].Contains(pair) == false)
+            if (hashtable[index] == null || hashtable[index].Contains(pair) == false)
             {
                 if (hashtable[index] == null)
                 {
@@ -112,8 +105,7 @@ namespace ChainHashtable
                 hashtable[index].AddFirst(pair);            
             }            
         }
-
-        public void AddElem(TKey key, TValue value)
+        public void Add(TKey key, TValue value)
         {
             if (Contains(key)) return;
             Pair<TKey, TValue> pair = new Pair<TKey, TValue>(key, value);            
@@ -126,10 +118,8 @@ namespace ChainHashtable
                 }
                 hashtable[index].AddFirst(pair);                
             }            
-        }               
-
-        //удаление элемента
-        public void DeleteElem(Pair<TKey, TValue> pair)
+        }
+        public void Delete(Pair<TKey, TValue> pair)
         {
             int index = FindElem(pair);
             if (index != -1)
@@ -137,8 +127,7 @@ namespace ChainHashtable
                 hashtable[index].Remove(pair);
             }
         }
-
-        public void DeleteElem(TKey key)
+        public void Delete(TKey key)
         {            
             int index = FindElem(key);
             if (index != -1)
@@ -152,22 +141,32 @@ namespace ChainHashtable
                     }
                 }                              
             }
-        }        
-
-        //вывод в консоль для отладки
-        public void Print()
+        }
+        System.Collections.Generic.IEnumerator<Pair<TKey, TValue>> System.Collections.Generic.IEnumerable<Pair<TKey, TValue>>.GetEnumerator()
         {
-            for (int i=0; i<size; i++)
+            foreach (var item in hashtable)
             {
-                Console.Write($"{i} ");
-                if (hashtable[i] != null)
+                if (item != null)
                 {
-                    foreach (var pair in hashtable[i])
+                    foreach (var node in item)
                     {
-                        Console.Write($"{pair.Key.Key} {pair.Key.Value}");
+                        yield return node.Key;
                     }
-                }                
-                Console.WriteLine();
+                }
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            foreach (var item in hashtable)
+            {
+                if (item != null)
+                {
+                    foreach (var node in item)
+                    {
+                        yield return node.Key;
+                    }
+                }
             }
         }
     }

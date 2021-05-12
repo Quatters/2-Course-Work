@@ -9,12 +9,13 @@ namespace _2_Course_Work
         {
             InitializeComponent();
             AcceptButton = OK_button;
+            CancelButton = Cancel_button;
         }
         private void Name_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             MainForm mainForm = (MainForm)Owner;
-            Genre_textBox.Text = mainForm.OAHT.GetValue(Name_comboBox.Text);
-            Author_textBox.Text = mainForm.CHT.GetValue(Name_comboBox.Text);
+            Genre_textBox.Text = mainForm.NameGenreHT.GetValue(Name_comboBox.Text).Cells[1].Value.ToString();
+            Author_textBox.Text = mainForm.NameAuthorHT.GetValue(Name_comboBox.Text).Cells[1].Value.ToString();
         }
         protected internal void ResetToDefault()
         {

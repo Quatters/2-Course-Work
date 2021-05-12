@@ -9,6 +9,7 @@ namespace _2_Course_Work
             InitializeComponent();
             Text = formName;
             AcceptButton = OK_button;
+            CancelButton = Cancel_button;
         }
 
         private void NameGenreForm_Load(object sender, System.EventArgs e)

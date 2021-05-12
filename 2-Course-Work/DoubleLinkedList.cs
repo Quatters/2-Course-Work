@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace DoubleLinkedList
+﻿namespace DoubleLinkedList
 {
     public class DoubleLinkedListNode<T>
     {
@@ -15,7 +12,7 @@ namespace DoubleLinkedList
             Prev = prev;
         }        
     }
-    public class DoubleLinkedList<T> : IEnumerable<DoubleLinkedListNode<T>>
+    public class DoubleLinkedList<T> : System.Collections.Generic.IEnumerable<DoubleLinkedListNode<T>>
     {
         public DoubleLinkedListNode<T> First { get; private set; } = null;
         public DoubleLinkedListNode<T> Last { get; private set; } = null;
@@ -102,8 +99,8 @@ namespace DoubleLinkedList
             } while (ptr != null);
             return null;
         }
-        
-        IEnumerator IEnumerable.GetEnumerator()
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             DoubleLinkedListNode<T> ptr = First;
             while (ptr != null) {
@@ -111,7 +108,7 @@ namespace DoubleLinkedList
                 ptr = ptr.Next;
             }
         }
-        IEnumerator<DoubleLinkedListNode<T>> IEnumerable<DoubleLinkedListNode<T>>.GetEnumerator()
+        System.Collections.Generic.IEnumerator<DoubleLinkedListNode<T>> System.Collections.Generic.IEnumerable<DoubleLinkedListNode<T>>.GetEnumerator()
         {
             DoubleLinkedListNode<T> ptr = First;
             while (ptr != null)

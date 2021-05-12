@@ -3,9 +3,9 @@ namespace OAHashtable
 {
     public class Pair<TKey, TValue>
     {
-        public TKey Key { get; }
+        public TKey Key { get; protected internal set; }
         public TValue Value { get; set; }
-        internal bool Deleted { get; set; }
+        protected internal bool Deleted { get; set; }
         public Pair(TKey key, TValue value)
         {
             Key = key;
