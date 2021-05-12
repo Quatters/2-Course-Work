@@ -108,7 +108,6 @@
             this.MinimizeBox = false;
             this.Name = "NameAuthorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Load += new System.EventHandler(this.NameAuthorForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

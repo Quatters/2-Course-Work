@@ -110,7 +110,6 @@
             this.Name = "NameGenreForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Load += new System.EventHandler(this.NameGenreForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

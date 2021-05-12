@@ -142,6 +142,7 @@ namespace ChainHashtable
                 }                              
             }
         }
+
         System.Collections.Generic.IEnumerator<Pair<TKey, TValue>> System.Collections.Generic.IEnumerable<Pair<TKey, TValue>>.GetEnumerator()
         {
             foreach (var item in hashtable)
@@ -155,7 +156,6 @@ namespace ChainHashtable
                 }
             }
         }
-
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             foreach (var item in hashtable)

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DoubleLinkedList;
 
 namespace BinaryTree
@@ -25,11 +20,10 @@ namespace BinaryTree
         }
 
     }
-    public class BinaryTree<TKey, TValue> : IEnumerable<BinaryTreeNode<TKey,TValue>> where TKey : IComparable
+    public class BinaryTree<TKey, TValue> : System.Collections.Generic.IEnumerable<BinaryTreeNode<TKey,TValue>> where TKey : IComparable
     {
         private BinaryTreeNode<TKey, TValue> root = null;
-        public void Add(TKey key, TValue value) => Add(ref root, key, value);       
-
+        public void Add(TKey key, TValue value) => Add(ref root, key, value);
         private void Add(ref BinaryTreeNode<TKey, TValue> ptr, TKey key, TValue value)
         {
             if (ptr == null)
@@ -71,9 +65,7 @@ namespace BinaryTree
                 }
             }
         }
-
         public void Clear() => root = null;
-
         public void Remove(TKey key, TValue value)
         {
             BinaryTreeNode<TKey, TValue> ptr = Find(key);
@@ -131,7 +123,6 @@ namespace BinaryTree
                 }
             }
         }
-
         public DoubleLinkedList<TValue> GetValues(TKey key)
         {
             BinaryTreeNode<TKey, TValue> ptr = Find(key);
@@ -141,9 +132,7 @@ namespace BinaryTree
             }
             return ptr.value;
         }
-
         private BinaryTreeNode<TKey, TValue> Find(TKey key) => Find(ref root, key);
-
         private BinaryTreeNode<TKey, TValue> Find(ref BinaryTreeNode<TKey, TValue> ptr, TKey key)
         {
             if (ptr == null)
@@ -170,7 +159,7 @@ namespace BinaryTree
             }
         }
 
-        IEnumerator<BinaryTreeNode<TKey, TValue>> IEnumerable<BinaryTreeNode<TKey, TValue>>.GetEnumerator()
+        System.Collections.Generic.IEnumerator<BinaryTreeNode<TKey, TValue>> System.Collections.Generic.IEnumerable<BinaryTreeNode<TKey, TValue>>.GetEnumerator()
         {
             DoubleLinkedList<BinaryTreeNode<TKey, TValue>> stack = new DoubleLinkedList<BinaryTreeNode<TKey, TValue>>();
             BinaryTreeNode<TKey, TValue> ptr = root;
@@ -187,8 +176,7 @@ namespace BinaryTree
                 stack.Remove(stack.First.Key);
             }
         }
-
-        IEnumerator IEnumerable.GetEnumerator()
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             DoubleLinkedList<BinaryTreeNode<TKey, TValue>> stack = new DoubleLinkedList<BinaryTreeNode<TKey, TValue>>();
             BinaryTreeNode<TKey, TValue> ptr = root;

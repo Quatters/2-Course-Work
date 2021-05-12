@@ -1,14 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-using DoubleLinkedList;
 using OAHashtable;
 using RBTree;
 using ChainHashtable;
@@ -39,10 +34,11 @@ namespace _2_Course_Work
             structureForm.Owner = this;
         }
         private void LoadFile()
-        {            
+        {
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.Filter = "Справочник (*.txt)|*.txt";
-            openDialog.InitialDirectory = "C:\\Users\\mi\\source\\repos\\2-Course-Work\\saves";
+            //openDialog.InitialDirectory = "C:\\Users\\mi\\source\\repos\\2-Course-Work\\saves";
+            openDialog.InitialDirectory = Path.Combine(new FileInfo(Application.StartupPath).DirectoryName);
             DialogResult result = openDialog.ShowDialog();
             string line = "";
             string[] cells;
@@ -62,7 +58,7 @@ namespace _2_Course_Work
                 ClearAllStructures();
                 try
                 {
-                    while (!reader.ReadLine().StartsWith("#"));
+                    while (!reader.ReadLineAsync().Result.StartsWith("#"));
                     int iter = 0;
                     while (!line.StartsWith("#")) // чтение структуры
                     {
@@ -112,33 +108,33 @@ namespace _2_Course_Work
                 }
             }
         }
-        private void SaveGrid(DataGridView grid, StreamWriter writer)
+        private async Task SaveGrid(DataGridView grid, StreamWriter writer)
         {
             for (int i = 0; i < grid.RowCount; i++)
             {
                 for (int j = 0; j < grid.ColumnCount; j++)
                 {
-                    writer.Write($"{grid.Rows[i].Cells[j].Value.ToString().Replace(' ', '_'), -FILE_OUTPUT_SPACE} ");
+                    await writer.WriteAsync($"{grid.Rows[i].Cells[j].Value.ToString().Replace(' ', '_'), -FILE_OUTPUT_SPACE} ");
                 }
-                writer.WriteLine();
+                await writer.WriteLineAsync();
             }
         }
-        private void SaveFile()
+        private async Task SaveFile()
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.Filter = "Справочник (*.txt)|*.txt";
-            saveDialog.InitialDirectory = "C:\\Users\\mi\\source\\repos\\2-Course-Work\\saves";
+            saveDialog.InitialDirectory = Path.Combine(new FileInfo(Application.StartupPath).DirectoryName);
             DialogResult result = saveDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
                 StreamWriter writer = new StreamWriter(saveDialog.FileName);
-                writer.WriteLine($"# Общая структура");
-                SaveGrid(StructureTable, writer);
-                writer.WriteLine($"# Конец общей структуры\n\n# Справочник название-жанр");
-                SaveGrid(NameGenreTable, writer);
-                writer.WriteLine($"# Конец справочника\n\n# Справочник название-автор");
-                SaveGrid(NameAuthorTable, writer);
-                writer.WriteLine($"# Конец справочника");
+                await writer.WriteLineAsync($"# Общая структура");
+                await SaveGrid(StructureTable, writer);
+                await writer.WriteLineAsync($"# Конец общей структуры\n\n# Справочник название-жанр");
+                await SaveGrid(NameGenreTable, writer);
+                await writer.WriteLineAsync($"# Конец справочника\n\n# Справочник название-автор");
+                await SaveGrid(NameAuthorTable, writer);
+                await writer.WriteLineAsync($"# Конец справочника");
                 writer.Close();
                 saved = true;
                 UpdateInfo("Справочник успешно сохранен");
@@ -153,7 +149,7 @@ namespace _2_Course_Work
             NameGenreHT.Add(name, NameGenreTable.Rows[index]);
             saved = false;
             if (NameAuthorHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
-            UpdateInfo("Запись успешно добавлена");
+            UpdateInfo($"Запись [{name}/{genre}] добавлена");
         }
         private void NameAuthorAdd(string name, string author)
         {
@@ -161,7 +157,7 @@ namespace _2_Course_Work
             NameAuthorHT.Add(name, NameAuthorTable.Rows[index]);            
             saved = false;
             if (NameGenreHT.Contains(name)) structureForm.Name_comboBox.Items.Add(name);
-            UpdateInfo("Запись успешно добавлена");
+            UpdateInfo($"Запись [{name}/{author}] добавлена");
         }
         private void StructureAdd(string name, string author, string genre, string publisher, int year)
         {
@@ -170,7 +166,7 @@ namespace _2_Course_Work
             NameTree.Add(name, StructureTable.Rows[index]);
             PublisherTree.Add(publisher, StructureTable.Rows[index]);
             saved = false;
-            UpdateInfo("Запись добавлена");
+            UpdateInfo($"Запись [{name}/{author}/{genre}/{publisher}/{year}] добавлена");
         }
         private void NameGenreChange(string name, string genre, DataGridViewRow row)
         {
@@ -204,18 +200,15 @@ namespace _2_Course_Work
                     DialogResult resultNameAuthorTable = MessageBox.Show($"С названием \"{oldName}\" найдена запись в справочнике Название/автор, которая" +
                             $" подлежит изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (resultNameAuthorTable == DialogResult.No) return;
-                    string author = "";
-                    foreach (DataGridViewRow naRow in NameAuthorTable.Rows)
-                    {
-                        if (naRow.Cells[0].Value.ToString() == oldName)
-                        {
-                            naRow.Cells[0].Value = name;
-                            author = naRow.Cells[1].Value.ToString();
-                            break;
-                        }
-                    }
+                    var rowInNameAuthor = NameAuthorHT.GetValue(oldName);
+                    NameAuthorHT.Delete(oldName);
+                    rowInNameAuthor.Cells[0].Value = name;
+                    NameAuthorHT.Add(name, rowInNameAuthor);
                     NameAuthorHT.Delete(oldName);
                     NameAuthorHT.Add(name, row);
+                    int nameIndexInStructureForm = structureForm.Name_comboBox.Items.IndexOf(oldName);
+                    structureForm.Name_comboBox.Items.RemoveAt(nameIndexInStructureForm);
+                    structureForm.Name_comboBox.Items.Insert(nameIndexInStructureForm, name);
                     if (rowsToChange.Size != 0)
                     {                        
                         DialogResult resultStructure = MessageBox.Show($"С названием \"{oldName}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
@@ -230,8 +223,8 @@ namespace _2_Course_Work
                     }
                 }
                 NameGenreHT.Delete(oldName);
-                NameGenreHT.Add(name, row);
-                row.Cells[0].Value = name;                
+                row.Cells[0].Value = name;
+                NameGenreHT.Add(name, row);                
             }
             UpdateInfo($"Запись [{oldName}/{oldGenre}] изменена");
         }
@@ -264,21 +257,16 @@ namespace _2_Course_Work
                 var rowsToChange = NameTree.GetValues(oldName);
                 if (NameAuthorHT.Contains(oldName))
                 {
-                    DialogResult resultNameAuthorTable = MessageBox.Show($"С названием \"{oldName}\" найдена запись в справочнике Название/автор, которая" +
+                    DialogResult resultNameAuthorTable = MessageBox.Show($"С названием \"{oldName}\" найдена запись в справочнике Название/жанр, которая" +
                             $" подлежит изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (resultNameAuthorTable == DialogResult.No) return;
-                    string genre = "";
-                    foreach (DataGridViewRow ngRow in NameGenreTable.Rows)
-                    {
-                        if (ngRow.Cells[0].Value.ToString() == oldName)
-                        {
-                            ngRow.Cells[0].Value = name;
-                            genre = ngRow.Cells[1].Value.ToString();
-                            break;
-                        }
-                    }
+                    var rowInNameGenre = NameGenreHT.GetValue(oldName);
                     NameGenreHT.Delete(oldName);
-                    NameGenreHT.Add(name, row);
+                    rowInNameGenre.Cells[0].Value = name;
+                    NameGenreHT.Add(name, rowInNameGenre);
+                    int nameIndexInStructureForm = structureForm.Name_comboBox.Items.IndexOf(oldName);
+                    structureForm.Name_comboBox.Items.RemoveAt(nameIndexInStructureForm);
+                    structureForm.Name_comboBox.Items.Insert(nameIndexInStructureForm, name);
                     if (rowsToChange.Size != 0)
                     {
                         DialogResult resultStructure = MessageBox.Show($"С названием \"{oldName}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
@@ -293,8 +281,8 @@ namespace _2_Course_Work
                     }
                 }
                 NameAuthorHT.Delete(oldName);
-                NameAuthorHT.Add(name, row);
                 row.Cells[0].Value = name;
+                NameAuthorHT.Add(name, row);                
             }
             UpdateInfo($"Запись [{oldName}/{oldAuthor}] изменена");
         }
@@ -478,13 +466,10 @@ namespace _2_Course_Work
                             }
                             if (publisher != oldPublisher) 
                             {
-                                // добавить для авл-дерева
                                 row.Cells[3].Value = structureForm.Publisher_textBox.Text;
                             }
                             if (year != oldYear)
                             {
-                                YearTree.GetValues(year).Remove(StructureTable.Rows[rowIndex]);
-                                YearTree.Add(year, StructureTable.Rows[rowIndex]);
                                 row.Cells[4].Value = structureForm.Year_numeric.Value;
                             }
                             success = true;
@@ -604,26 +589,11 @@ namespace _2_Course_Work
                 }
             }
         }
-        private void Save_button_Click(object sender, EventArgs e) => SaveFile();
-        private bool WantToSave()
-        {
-            var result = MessageBox.Show("Текущий справочник не сохранен. Хотите сохранить?", "Предупреждение",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            return result == DialogResult.Yes;
-        }
         private bool NotSavedButContinue()
         {
             var result = MessageBox.Show("Текущий справочник не сохранен. Продолжить?", "Предупреждение",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             return result == DialogResult.Yes;
-        }
-        private void Load_button_Click(object sender, EventArgs e)
-        {
-            if (!saved)
-            {
-                if (!NotSavedButContinue()) return;
-            }
-            LoadFile();
         }
         private void Find_button_Click(object sender, EventArgs e)
         {
@@ -634,9 +604,19 @@ namespace _2_Course_Work
             findFormShown = true;
             form.Location = new Point(Location.X + Width / 2 - form.Width / 2, Location.Y + Height / 2 - form.Height / 2);
         }
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!saved && WantToSave()) SaveFile();
+            if (!saved)
+            {
+                var result = MessageBox.Show("Текущий справочник не сохранен. Хотите сохранить?", "Предупреждение",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                if (result == DialogResult.Yes) await SaveFile();
+            }
         }
         private void Delete_button_Click(object sender, EventArgs e)
         {
@@ -723,7 +703,7 @@ namespace _2_Course_Work
                 UpdateInfo($"Запись [{name}/{author}] удалена");
             }
         }
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e) => SaveFile();
+        private async void saveToolStripMenuItem_Click(object sender, EventArgs e) => await SaveFile();
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!saved)
@@ -750,7 +730,7 @@ namespace _2_Course_Work
             NameAuthorHT.Clear();
             YearTree.Clear();
             PublisherTree.Clear();
-            NameTree.Clear();            
+            NameTree.Clear();
             structureForm.Name_comboBox.Items.Clear();            
         }
         private void openDebugFormToolStripMenuItem_Click(object sender, EventArgs e)

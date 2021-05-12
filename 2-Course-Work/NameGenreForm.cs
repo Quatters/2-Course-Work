@@ -11,10 +11,5 @@ namespace _2_Course_Work
             AcceptButton = OK_button;
             CancelButton = Cancel_button;
         }
-
-        private void NameGenreForm_Load(object sender, System.EventArgs e)
-        {
-
-        }
     }
 }

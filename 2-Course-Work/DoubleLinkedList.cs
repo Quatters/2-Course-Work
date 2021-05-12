@@ -84,10 +84,7 @@
             }
             Size--;
         }
-        public void Clear()
-        {
-            First = Last = null;
-        }
+        public void Clear() => First = Last = null;
         public DoubleLinkedListNode<T> GetNode(T key)
         {
             if (First == null) return null;
