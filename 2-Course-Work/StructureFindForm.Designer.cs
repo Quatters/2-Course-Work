@@ -1,6 +1,6 @@
 ﻿namespace _2_Course_Work
 {
-    partial class FindForm
+    partial class StructureFindForm
     {
         /// <summary>
         /// Required designer variable.
@@ -35,6 +35,8 @@
             this.publisher_textBox = new System.Windows.Forms.TextBox();
             this.byYears_checkbox = new System.Windows.Forms.CheckBox();
             this.byPublisher_checkbox = new System.Windows.Forms.CheckBox();
+            this.byName_checkBox = new System.Windows.Forms.CheckBox();
+            this.name_textBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.fromYear_numeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toYear_numeric)).BeginInit();
             this.SuspendLayout();
@@ -42,7 +44,7 @@
             // Find_button
             // 
             this.Find_button.Enabled = false;
-            this.Find_button.Location = new System.Drawing.Point(78, 192);
+            this.Find_button.Location = new System.Drawing.Point(78, 257);
             this.Find_button.Name = "Find_button";
             this.Find_button.Size = new System.Drawing.Size(100, 28);
             this.Find_button.TabIndex = 6;
@@ -53,7 +55,7 @@
             // fromYear_numeric
             // 
             this.fromYear_numeric.Enabled = false;
-            this.fromYear_numeric.Location = new System.Drawing.Point(33, 61);
+            this.fromYear_numeric.Location = new System.Drawing.Point(33, 133);
             this.fromYear_numeric.Maximum = new decimal(new int[] {
             2050,
             0,
@@ -66,7 +68,7 @@
             // toYear_numeric
             // 
             this.toYear_numeric.Enabled = false;
-            this.toYear_numeric.Location = new System.Drawing.Point(145, 61);
+            this.toYear_numeric.Location = new System.Drawing.Point(145, 133);
             this.toYear_numeric.Maximum = new decimal(new int[] {
             2050,
             0,
@@ -83,7 +85,7 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(117, 61);
+            this.label1.Location = new System.Drawing.Point(117, 133);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(22, 22);
             this.label1.TabIndex = 5;
@@ -93,7 +95,7 @@
             // publisher_textBox
             // 
             this.publisher_textBox.Enabled = false;
-            this.publisher_textBox.Location = new System.Drawing.Point(33, 147);
+            this.publisher_textBox.Location = new System.Drawing.Point(33, 217);
             this.publisher_textBox.Name = "publisher_textBox";
             this.publisher_textBox.Size = new System.Drawing.Size(190, 22);
             this.publisher_textBox.TabIndex = 5;
@@ -101,7 +103,7 @@
             // byYears_checkbox
             // 
             this.byYears_checkbox.AutoSize = true;
-            this.byYears_checkbox.Location = new System.Drawing.Point(22, 26);
+            this.byYears_checkbox.Location = new System.Drawing.Point(22, 98);
             this.byYears_checkbox.Name = "byYears_checkbox";
             this.byYears_checkbox.Size = new System.Drawing.Size(113, 21);
             this.byYears_checkbox.TabIndex = 1;
@@ -112,7 +114,7 @@
             // byPublisher_checkbox
             // 
             this.byPublisher_checkbox.AutoSize = true;
-            this.byPublisher_checkbox.Location = new System.Drawing.Point(22, 112);
+            this.byPublisher_checkbox.Location = new System.Drawing.Point(22, 182);
             this.byPublisher_checkbox.Name = "byPublisher_checkbox";
             this.byPublisher_checkbox.Size = new System.Drawing.Size(122, 21);
             this.byPublisher_checkbox.TabIndex = 4;
@@ -120,11 +122,32 @@
             this.byPublisher_checkbox.UseVisualStyleBackColor = true;
             this.byPublisher_checkbox.CheckedChanged += new System.EventHandler(this.byPublisher_checkbox_CheckedChanged);
             // 
-            // FindForm
+            // byName_checkBox
+            // 
+            this.byName_checkBox.AutoSize = true;
+            this.byName_checkBox.Location = new System.Drawing.Point(22, 20);
+            this.byName_checkBox.Name = "byName_checkBox";
+            this.byName_checkBox.Size = new System.Drawing.Size(116, 21);
+            this.byName_checkBox.TabIndex = 7;
+            this.byName_checkBox.Text = "По названию";
+            this.byName_checkBox.UseVisualStyleBackColor = true;
+            this.byName_checkBox.CheckedChanged += new System.EventHandler(this.byName_checkBox_CheckedChanged);
+            // 
+            // name_textBox
+            // 
+            this.name_textBox.Enabled = false;
+            this.name_textBox.Location = new System.Drawing.Point(33, 54);
+            this.name_textBox.Name = "name_textBox";
+            this.name_textBox.Size = new System.Drawing.Size(190, 22);
+            this.name_textBox.TabIndex = 8;
+            // 
+            // StructureFindForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(254, 232);
+            this.ClientSize = new System.Drawing.Size(254, 295);
+            this.Controls.Add(this.name_textBox);
+            this.Controls.Add(this.byName_checkBox);
             this.Controls.Add(this.byPublisher_checkbox);
             this.Controls.Add(this.byYears_checkbox);
             this.Controls.Add(this.publisher_textBox);
@@ -135,7 +158,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FindForm";
+            this.Name = "StructureFindForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Найти";
@@ -156,5 +179,7 @@
         protected internal System.Windows.Forms.Button Find_button;
         protected internal System.Windows.Forms.CheckBox byYears_checkbox;
         protected internal System.Windows.Forms.CheckBox byPublisher_checkbox;
+        protected internal System.Windows.Forms.CheckBox byName_checkBox;
+        protected internal System.Windows.Forms.TextBox name_textBox;
     }
 }

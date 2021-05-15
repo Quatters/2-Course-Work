@@ -23,6 +23,7 @@ namespace BinaryTree
     public class BinaryTree<TKey, TValue> : System.Collections.Generic.IEnumerable<BinaryTreeNode<TKey,TValue>> where TKey : IComparable
     {
         private BinaryTreeNode<TKey, TValue> root = null;
+        public BinaryTreeNode<TKey, TValue> Root => root;
         public void Add(TKey key, TValue value) => Add(ref root, key, value);
         private void Add(ref BinaryTreeNode<TKey, TValue> ptr, TKey key, TValue value)
         {

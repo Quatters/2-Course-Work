@@ -4,76 +4,13 @@ using System.Collections.Generic;
 using RBTree;
 using OAHashtable;
 using DoubleLinkedList;
+using BinaryTree;
 using ChainHashtable;
 
 namespace Tests
 {
     class Tests
     {
-        static void RB_Tree_test()
-        {
-            RBTree<int, int> tree = new RBTree<int, int>();
-            bool quit = false;
-            while (!quit)
-            {
-                tree.Draw();
-                Console.WriteLine();
-                Console.WriteLine("1) Добавить");
-                Console.WriteLine("2) Удалить");
-                Console.WriteLine("3) Заполнить случайно");
-                Console.WriteLine("4) Очистить");
-                Console.WriteLine("7) Симметричный обход");
-                Console.WriteLine("0) Выход");
-
-                switch (Console.ReadKey(true).Key)
-                {
-                    case ConsoleKey.D1:
-                        Console.WriteLine();
-                        Console.Write("Элемент: ");
-                        string input = Console.ReadLine();
-                        tree.Add(int.Parse(input), 0);
-                        Console.Clear();
-                        break;
-                    case ConsoleKey.D2:
-                        Console.WriteLine();
-                        Console.Write("Элемент: ");
-                        string del = Console.ReadLine();
-                        tree.Remove(int.Parse(del));
-                        Console.Clear();
-                        break;
-                    case ConsoleKey.D3:
-                        Console.WriteLine();
-                        Console.Write("Количество элементов: ");
-                        int quantity = int.Parse(Console.ReadLine());
-                        tree.Clear();
-                        for (int i = 0; i < quantity; i++)
-                        {
-                            tree.Add((i + 1), 0);
-                        }
-                        Console.Clear();
-                        break;
-                    case ConsoleKey.D4:
-                        Console.Clear();
-                        tree.Clear();
-                        break;
-                    case ConsoleKey.D7:
-                        Console.Clear();
-                        tree.PrintInOrder();
-                        Console.WriteLine("\nНажмите любую клавишу...");
-                        Console.ReadKey(true);
-                        Console.Clear();
-                        break;
-                    case ConsoleKey.D0:
-                        quit = true;
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Не реализовано");
-                        Console.WriteLine();
-                        break;
-                }
-            }
-        }
         static void OA_Hashtbale_test()
         {
             OAHashtable<string, string> table = new OAHashtable<string, string>();
@@ -116,23 +53,36 @@ namespace Tests
         }
         static void Main(string[] args)
         {
-            ChainHashtable<string, string> table = new ChainHashtable<string, string>();
-            string name = "faf";
-            string author = "jj";
-            table.Add(name, author);
-            name = "Трое в лодке, не считая собаки";
-            author = "Джером К. Джером";
-            table.Add(name, author);
-            name = "ffa";
-            author = "jj";
-            table.Add(name, author);
-            table.Print();
-            table.Add(name, author);
-            table.Print();
-            name = "faf";
-            table.Delete(name);
-            table.Print();
-
+            BinaryTree<int, int> tree = new BinaryTree<int, int>();
+            RBTree<int, int> rbtree = new RBTree<int, int>();
+            List<int> list1 = new List<int>();
+            List<int> list2 = new List<int>();
+            int n1, n2;
+            for (int i = 0; i < 10; i++)
+            {
+                n1 = new Random().Next(0, 100);
+                n2 = new Random().Next(0, 100);
+                rbtree.Add(n1, n2);
+                tree.Add(n1, n2);
+                list1.Add(n1);
+                list2.Add(n2);
+            }
+            Console.WriteLine(tree.Root.Key);
+            Console.WriteLine();
+            foreach(var item in tree)
+            {
+                Console.WriteLine(item.Key);
+            }
+            Console.WriteLine();
+            for (int i = 0; i < 10; i++)
+            {
+                //rbtree.Remove(list1[i], list2[i]);
+                tree.Remove(list1[i], list2[i]);
+            }
+            foreach (var item in tree)
+            {
+                Console.WriteLine(item.Key);
+            }
         }
     }
 }

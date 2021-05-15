@@ -26,60 +26,96 @@ namespace _2_Course_Work.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool FindFormByYears_checkBox_Checked {
+        public bool StructureFindFormByYears_checkBox_Checked {
             get {
-                return ((bool)(this["FindFormByYears_checkBox_Checked"]));
+                return ((bool)(this["StructureFindFormByYears_checkBox_Checked"]));
             }
             set {
-                this["FindFormByYears_checkBox_Checked"] = value;
+                this["StructureFindFormByYears_checkBox_Checked"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool FindFormByPublisher_checkBox_Checked {
+        public bool StructureFindFormByPublisher_checkBox_Checked {
             get {
-                return ((bool)(this["FindFormByPublisher_checkBox_Checked"]));
+                return ((bool)(this["StructureFindFormByPublisher_checkBox_Checked"]));
             }
             set {
-                this["FindFormByPublisher_checkBox_Checked"] = value;
+                this["StructureFindFormByPublisher_checkBox_Checked"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public decimal FindFormFromYear_numeric_Value {
+        public decimal StructureFindFormFromYear_numeric_Value {
             get {
-                return ((decimal)(this["FindFormFromYear_numeric_Value"]));
+                return ((decimal)(this["StructureFindFormFromYear_numeric_Value"]));
             }
             set {
-                this["FindFormFromYear_numeric_Value"] = value;
+                this["StructureFindFormFromYear_numeric_Value"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2000")]
-        public decimal FindFormToYear_numeric_Value {
+        public decimal StructureFindFormToYear_numeric_Value {
             get {
-                return ((decimal)(this["FindFormToYear_numeric_Value"]));
+                return ((decimal)(this["StructureFindFormToYear_numeric_Value"]));
             }
             set {
-                this["FindFormToYear_numeric_Value"] = value;
+                this["StructureFindFormToYear_numeric_Value"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FindFormPublisher_textBox_Text {
+        public string StructureFindFormPublisher_textBox_Text {
             get {
-                return ((string)(this["FindFormPublisher_textBox_Text"]));
+                return ((string)(this["StructureFindFormPublisher_textBox_Text"]));
             }
             set {
-                this["FindFormPublisher_textBox_Text"] = value;
+                this["StructureFindFormPublisher_textBox_Text"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool StructureFindFormByName_checkBox_Checked {
+            get {
+                return ((bool)(this["StructureFindFormByName_checkBox_Checked"]));
+            }
+            set {
+                this["StructureFindFormByName_checkBox_Checked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StructureFindFormName_textBox_Text {
+            get {
+                return ((string)(this["StructureFindFormName_textBox_Text"]));
+            }
+            set {
+                this["StructureFindFormName_textBox_Text"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string NameFindForm_Name_textBox_Text {
+            get {
+                return ((string)(this["NameFindForm_Name_textBox_Text"]));
+            }
+            set {
+                this["NameFindForm_Name_textBox_Text"] = value;
             }
         }
     }

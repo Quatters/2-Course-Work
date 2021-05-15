@@ -473,13 +473,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Publisher;
         private System.Windows.Forms.DataGridViewTextBoxColumn Year;
         private System.Windows.Forms.TabPage NameGenrePage;
-        private System.Windows.Forms.DataGridView NameGenreTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.TabPage NameAuthorPage;
-        private System.Windows.Forms.DataGridView NameAuthorTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn CH_Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn CH_Author;
+        protected internal System.Windows.Forms.DataGridView NameGenreTable;
+        protected internal System.Windows.Forms.DataGridView NameAuthorTable;
     }
 }
 

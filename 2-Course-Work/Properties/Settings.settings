@@ -2,19 +2,28 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="_2_Course_Work.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="FindFormByYears_checkBox_Checked" Type="System.Boolean" Scope="User">
+    <Setting Name="StructureFindFormByYears_checkBox_Checked" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="FindFormByPublisher_checkBox_Checked" Type="System.Boolean" Scope="User">
+    <Setting Name="StructureFindFormByPublisher_checkBox_Checked" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="FindFormFromYear_numeric_Value" Type="System.Decimal" Scope="User">
+    <Setting Name="StructureFindFormFromYear_numeric_Value" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="FindFormToYear_numeric_Value" Type="System.Decimal" Scope="User">
+    <Setting Name="StructureFindFormToYear_numeric_Value" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">2000</Value>
     </Setting>
-    <Setting Name="FindFormPublisher_textBox_Text" Type="System.String" Scope="User">
+    <Setting Name="StructureFindFormPublisher_textBox_Text" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="StructureFindFormByName_checkBox_Checked" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="StructureFindFormName_textBox_Text" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="NameFindForm_Name_textBox_Text" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
