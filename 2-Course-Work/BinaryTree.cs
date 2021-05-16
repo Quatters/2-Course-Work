@@ -75,7 +75,7 @@ namespace BinaryTree
                 ptr.value.Remove(value);
                 if (ptr.value.Size == 0)
                 {
-                    if(ptr.left == null && ptr.right == null)
+                    if (ptr.left == null && ptr.right == null)
                     {
                         if (ptr.Key.Equals(root.Key))
                         {
@@ -83,36 +83,64 @@ namespace BinaryTree
                         }
                         else
                         {
-                            if (ptr.parent.left.Key.Equals(ptr.Key))
+                            if (ptr.parent.left == ptr)
                             {
                                 ptr.parent.left = null;
                             }
                             else
                             {
                                 ptr.parent.right = null;
-                            }
+                            }                            
                         }
                     }
                     else
                     {
-                        if(ptr.left == null)
+                        if (ptr.left == null)
                         {
                             if (ptr == root)
                             {
+                                //ptr.right.parent = null;
                                 root = ptr.right;
+                                root.parent = null;
                             }
                             else
                             {
-                                if (ptr.parent.right.Key.Equals(ptr.Key))
+                                if (ptr.parent.right == ptr)
                                 {
+                                    ptr.right.parent = ptr.parent;
                                     ptr.parent.right = ptr.right;
                                 }
                                 else
                                 {
+                                    ptr.right.parent = ptr.parent;
                                     ptr.parent.left = ptr.right;
                                 }
-                            }                            
+                            }                         
                         }
+                        //
+                        else if (ptr.right == null)
+                        {
+                            if (ptr == root)
+                            {
+                                //ptr.left.parent = null;
+                                root = ptr.left;
+                                root.parent = null;
+                            }
+                            else
+                            {
+                                if (ptr.parent.right == ptr)
+                                {
+                                    ptr.left.parent = ptr.parent;
+                                    ptr.parent.right = ptr.right;
+                                }
+                                else
+                                {
+                                    ptr.left.parent = ptr.parent;
+                                    ptr.parent.left = ptr.right;
+                                }
+                            }
+                        }
+                        //
                         else
                         {
                             BinaryTreeNode<TKey, TValue> leaf = ptr.left;
