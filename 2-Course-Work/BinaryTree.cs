@@ -69,58 +69,65 @@ namespace BinaryTree
         public void Clear() => root = null;
         public void Remove(TKey key, TValue value)
         {
-            BinaryTreeNode<TKey, TValue> ptr = Find(key);
-            if (ptr != null)
+            var ptr = Find(key);
+            if (ptr == null) return;
+            ptr.value.Remove(value);
+            if (ptr.value.Size != 0) return;
+            var parent = ptr.parent;
+            if (ptr.left == null && ptr.right == null)
             {
-                ptr.value.Remove(value);
-                if (ptr.value.Size == 0)
+                if (ptr == root)
                 {
-                    if(ptr.left == null && ptr.right == null)
+                    root = null;
+                    return;
+                }
+                if (parent.left == ptr) parent.left = null;
+                if (parent.right == ptr) parent.right = null;
+            }
+            else if (ptr.left == null || ptr.right == null)
+            {
+                if (ptr.left == null)
+                {
+                    if (ptr == root)
                     {
-                        if (ptr == root)
-                        {
-                            Clear();
-                        }
-                        else
-                        {
-                            if (ptr.parent.left == ptr)
-                            {
-                                ptr.parent.left = null;
-                            }
-                            else
-                            {
-                                ptr.parent.right = null;
-                            }
-                        }
+                        root = root.right;
+                        root.parent = null;
+                        return;
                     }
-                    else
+                    if (parent.left == ptr) parent.left = ptr.right;
+                    else parent.right = ptr.right;
+                    ptr.right.parent = parent;
+                }
+                else
+                {
+                    if (ptr == root)
                     {
-                        if(ptr.left == null)
-                        {
-                            ptr.value = ptr.right.value;
-                            ptr.key = ptr.right.key;                            
-                            ptr = ptr.right;
-                            ptr.parent.right = ptr.right;
-                        }
-                        else
-                        {
-                            BinaryTreeNode<TKey, TValue> leaf = ptr.left;
-                            while (leaf.right != null)
-                            {
-                                leaf = leaf.right;
-                            }
-                            ptr.value = leaf.value;
-                            ptr.key = leaf.key;
-                            if (leaf.parent == ptr)
-                            {
-                                ptr.left = leaf.left;
-                            }
-                            else
-                            {
-                                leaf.parent.right = leaf.left;
-                            }                            
-                        }
+                        root = root.left;
+                        root.parent = null;
+                        return;
                     }
+                    if (parent.left == ptr) parent.left = ptr.left;
+                    else parent.right = ptr.left;
+                    ptr.left.parent = parent;
+                }
+            }
+            else
+            {
+                var successor = ptr.left;
+                while (successor.right != null) successor = successor.right;
+                ptr.key = successor.key;
+                ptr.value = successor.value;
+                if (successor.parent.left == successor)
+                {
+                    successor.parent.left = successor.right;
+                    if (successor.right != null)
+                        successor.right.parent = successor.parent;
+                }
+                else
+                {
+                    successor.parent.right = successor.right;
+                    if (successor.right != null)
+                        successor.right.parent = successor.parent;
                 }
             }
         }

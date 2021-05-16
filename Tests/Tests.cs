@@ -58,10 +58,10 @@ namespace Tests
             List<int> list1 = new List<int>();
             List<int> list2 = new List<int>();
             int n1, n2;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 10000; i++)
             {
-                n1 = new Random().Next(0, 100);
-                n2 = new Random().Next(0, 100);
+                n1 = new Random().Next(0, 10000);
+                n2 = new Random().Next(0, 10000);
                 rbtree.Add(n1, n2);
                 tree.Add(n1, n2);
                 list1.Add(n1);
@@ -74,14 +74,14 @@ namespace Tests
                 Console.WriteLine(item.Key);
             }
             Console.WriteLine();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 //rbtree.Remove(list1[i], list2[i]);
                 tree.Remove(list1[i], list2[i]);
             }
-            foreach (var item in tree)
+            if (tree.Root != null)
             {
-                Console.WriteLine(item.Key);
+                while (true) Console.WriteLine("Есть не удаленные!");
             }
         }
     }
