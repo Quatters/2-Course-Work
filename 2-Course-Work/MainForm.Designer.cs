@@ -50,17 +50,17 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.MainPage = new System.Windows.Forms.TabPage();
             this.StructureTable = new System.Windows.Forms.DataGridView();
+            this.NameGenrePage = new System.Windows.Forms.TabPage();
+            this.NameGenreTable = new System.Windows.Forms.DataGridView();
+            this.NameAuthorPage = new System.Windows.Forms.TabPage();
+            this.NameAuthorTable = new System.Windows.Forms.DataGridView();
             this.BookName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Author = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Genre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Publisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Year = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameGenrePage = new System.Windows.Forms.TabPage();
-            this.NameGenreTable = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameAuthorPage = new System.Windows.Forms.TabPage();
-            this.NameAuthorTable = new System.Windows.Forms.DataGridView();
             this.CH_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CH_Author = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StatusStrip.SuspendLayout();
@@ -258,41 +258,6 @@
             this.StructureTable.Size = new System.Drawing.Size(854, 453);
             this.StructureTable.TabIndex = 0;
             // 
-            // BookName
-            // 
-            this.BookName.HeaderText = "Название";
-            this.BookName.MinimumWidth = 6;
-            this.BookName.Name = "BookName";
-            this.BookName.ReadOnly = true;
-            // 
-            // Author
-            // 
-            this.Author.HeaderText = "Автор";
-            this.Author.MinimumWidth = 6;
-            this.Author.Name = "Author";
-            this.Author.ReadOnly = true;
-            // 
-            // Genre
-            // 
-            this.Genre.HeaderText = "Жанр";
-            this.Genre.MinimumWidth = 6;
-            this.Genre.Name = "Genre";
-            this.Genre.ReadOnly = true;
-            // 
-            // Publisher
-            // 
-            this.Publisher.HeaderText = "Издательство";
-            this.Publisher.MinimumWidth = 6;
-            this.Publisher.Name = "Publisher";
-            this.Publisher.ReadOnly = true;
-            // 
-            // Year
-            // 
-            this.Year.HeaderText = "Год издания";
-            this.Year.MinimumWidth = 6;
-            this.Year.Name = "Year";
-            this.Year.ReadOnly = true;
-            // 
             // NameGenrePage
             // 
             this.NameGenrePage.Controls.Add(this.NameGenreTable);
@@ -340,20 +305,6 @@
             this.NameGenreTable.RowTemplate.Height = 24;
             this.NameGenreTable.Size = new System.Drawing.Size(854, 453);
             this.NameGenreTable.TabIndex = 1;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Название";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Жанр";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // NameAuthorPage
             // 
@@ -403,12 +354,69 @@
             this.NameAuthorTable.Size = new System.Drawing.Size(854, 453);
             this.NameAuthorTable.TabIndex = 2;
             // 
+            // BookName
+            // 
+            this.BookName.HeaderText = "Название";
+            this.BookName.MinimumWidth = 6;
+            this.BookName.Name = "BookName";
+            this.BookName.ReadOnly = true;
+            this.BookName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Author
+            // 
+            this.Author.HeaderText = "Автор";
+            this.Author.MinimumWidth = 6;
+            this.Author.Name = "Author";
+            this.Author.ReadOnly = true;
+            this.Author.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Genre
+            // 
+            this.Genre.HeaderText = "Жанр";
+            this.Genre.MinimumWidth = 6;
+            this.Genre.Name = "Genre";
+            this.Genre.ReadOnly = true;
+            this.Genre.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Publisher
+            // 
+            this.Publisher.HeaderText = "Издательство";
+            this.Publisher.MinimumWidth = 6;
+            this.Publisher.Name = "Publisher";
+            this.Publisher.ReadOnly = true;
+            this.Publisher.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Year
+            // 
+            this.Year.HeaderText = "Год издания";
+            this.Year.MinimumWidth = 6;
+            this.Year.Name = "Year";
+            this.Year.ReadOnly = true;
+            this.Year.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Название";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Жанр";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // CH_Name
             // 
             this.CH_Name.HeaderText = "Название";
             this.CH_Name.MinimumWidth = 6;
             this.CH_Name.Name = "CH_Name";
             this.CH_Name.ReadOnly = true;
+            this.CH_Name.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // CH_Author
             // 
@@ -416,6 +424,7 @@
             this.CH_Author.MinimumWidth = 6;
             this.CH_Author.Name = "CH_Author";
             this.CH_Author.ReadOnly = true;
+            this.CH_Author.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // MainForm
             // 
@@ -467,19 +476,19 @@
         protected internal System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage MainPage;
         protected internal System.Windows.Forms.DataGridView StructureTable;
+        private System.Windows.Forms.TabPage NameGenrePage;
+        private System.Windows.Forms.TabPage NameAuthorPage;
+        protected internal System.Windows.Forms.DataGridView NameGenreTable;
+        protected internal System.Windows.Forms.DataGridView NameAuthorTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn BookName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Author;
         private System.Windows.Forms.DataGridViewTextBoxColumn Genre;
         private System.Windows.Forms.DataGridViewTextBoxColumn Publisher;
         private System.Windows.Forms.DataGridViewTextBoxColumn Year;
-        private System.Windows.Forms.TabPage NameGenrePage;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.TabPage NameAuthorPage;
         private System.Windows.Forms.DataGridViewTextBoxColumn CH_Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn CH_Author;
-        protected internal System.Windows.Forms.DataGridView NameGenreTable;
-        protected internal System.Windows.Forms.DataGridView NameAuthorTable;
     }
 }
 

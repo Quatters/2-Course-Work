@@ -171,6 +171,7 @@ namespace _2_Course_Work
         {
             string oldName = row.Cells[0].Value.ToString();
             string oldGenre = row.Cells[1].Value.ToString();
+            bool confirmedChange = false;
             if (name == oldName && genre == oldGenre)
             {
                 UpdateInfo($"Запись [{oldName}/{oldGenre}] не изменена");
@@ -181,9 +182,14 @@ namespace _2_Course_Work
                 var rowsToChange = NameTree.GetValues(oldName);
                 if (rowsToChange.Size != 0)
                 {
-                    DialogResult result = MessageBox.Show($"С жанром \"{oldGenre}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
-                        $" подлежат изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (result == DialogResult.No) return;
+                    DialogResult result = MessageBox.Show($"Изменение затронет другие справочники. Продолжить?", 
+                        "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.No)
+                    {
+                        UpdateInfo($"Запись [{oldName}/{oldGenre}] не изменена");
+                        return;
+                    }
+                    confirmedChange = true;
                 }
                 foreach (var rowToChange in rowsToChange)
                 {
@@ -196,9 +202,16 @@ namespace _2_Course_Work
                 var rowsToChange = NameTree.GetValues(oldName);
                 if (NameAuthorHT.Contains(oldName))
                 {
-                    DialogResult resultNameAuthorTable = MessageBox.Show($"С названием \"{oldName}\" найдена запись в справочнике Название/автор, которая" +
-                            $" подлежит изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (resultNameAuthorTable == DialogResult.No) return;
+                    if (!confirmedChange)
+                    {
+                        DialogResult result = MessageBox.Show($"Изменение затронет другие справочники. Продолжить?",
+                        "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result == DialogResult.No)
+                        {
+                            UpdateInfo($"Запись [{oldName}/{oldGenre}] не изменена");
+                            return;
+                        }
+                    }
                     var rowInNameAuthor = NameAuthorHT.GetValue(oldName);
                     NameAuthorHT.Delete(oldName);
                     rowInNameAuthor.Cells[0].Value = name;
@@ -209,10 +222,7 @@ namespace _2_Course_Work
                     structureForm.Name_comboBox.Items.RemoveAt(nameIndexInStructureForm);
                     structureForm.Name_comboBox.Items.Insert(nameIndexInStructureForm, name);
                     if (rowsToChange.Size != 0)
-                    {                        
-                        DialogResult resultStructure = MessageBox.Show($"С названием \"{oldName}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
-                            $" подлежат изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if (resultStructure == DialogResult.No) return;
+                    {
                         NameTree.RemoveKey(oldName);
                         foreach (var rowToChange in rowsToChange)
                         {
@@ -238,6 +248,7 @@ namespace _2_Course_Work
         {
             string oldName = row.Cells[0].Value.ToString();
             string oldAuthor = row.Cells[1].Value.ToString();
+            bool confirmedChange = false;
             if (name == oldName && author == oldAuthor)
             {
                 UpdateInfo($"Запись [{oldName}/{oldAuthor}] не изменена");
@@ -248,9 +259,14 @@ namespace _2_Course_Work
                 var rowsToChange = NameTree.GetValues(oldName);
                 if (rowsToChange.Size != 0)
                 {
-                    DialogResult result = MessageBox.Show($"С автором \"{oldAuthor}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
-                        $" подлежат изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (result == DialogResult.No) return;
+                    DialogResult result = MessageBox.Show($"Изменение затронет другие справочники. Продолжить?",
+                        "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.No)
+                    {
+                        UpdateInfo($"Запись [{oldName}/{oldAuthor}] не изменена");
+                        return;
+                    }
+                    confirmedChange = true;
                 }
                 foreach (var rowToChange in rowsToChange)
                 {
@@ -263,9 +279,16 @@ namespace _2_Course_Work
                 var rowsToChange = NameTree.GetValues(oldName);
                 if (NameGenreHT.Contains(oldName))
                 {
-                    DialogResult resultNameAuthorTable = MessageBox.Show($"С названием \"{oldName}\" найдена запись в справочнике Название/жанр, которая" +
-                            $" подлежит изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (resultNameAuthorTable == DialogResult.No) return;
+                    if (!confirmedChange)
+                    {
+                        DialogResult result = MessageBox.Show($"Изменение затронет другие справочники. Продолжить?",
+                        "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result == DialogResult.No)
+                        {
+                            UpdateInfo($"Запись [{oldName}/{oldAuthor}] не изменена");
+                            return;
+                        }
+                    }
                     var rowInNameGenre = NameGenreHT.GetValue(oldName);
                     NameGenreHT.Delete(oldName);
                     rowInNameGenre.Cells[0].Value = name;
@@ -275,9 +298,6 @@ namespace _2_Course_Work
                     structureForm.Name_comboBox.Items.Insert(nameIndexInStructureForm, name);
                     if (rowsToChange.Size != 0)
                     {
-                        DialogResult resultStructure = MessageBox.Show($"С названием \"{oldName}\" найдены записи в общей структуре ({rowsToChange.Size}), которые" +
-                            $" подлежат изменению. Продолжить?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if (resultStructure == DialogResult.No) return;
                         NameTree.RemoveKey(oldName);
                         foreach (var rowToChange in rowsToChange)
                         {
