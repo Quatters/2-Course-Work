@@ -77,13 +77,13 @@ namespace BinaryTree
                 {
                     if(ptr.left == null && ptr.right == null)
                     {
-                        if (ptr == root)
+                        if (ptr.Key.Equals(root.Key))
                         {
                             Clear();
                         }
                         else
                         {
-                            if (ptr.parent.left == ptr)
+                            if (ptr.parent.left.Key.Equals(ptr.Key))
                             {
                                 ptr.parent.left = null;
                             }
@@ -97,10 +97,21 @@ namespace BinaryTree
                     {
                         if(ptr.left == null)
                         {
-                            ptr.value = ptr.right.value;
-                            ptr.key = ptr.right.key;                            
-                            ptr = ptr.right;
-                            ptr.parent.right = ptr.right;
+                            if (ptr == root)
+                            {
+                                root = ptr.right;
+                            }
+                            else
+                            {
+                                if (ptr.parent.right.Key.Equals(ptr.Key))
+                                {
+                                    ptr.parent.right = ptr.right;
+                                }
+                                else
+                                {
+                                    ptr.parent.left = ptr.right;
+                                }
+                            }                            
                         }
                         else
                         {
@@ -109,15 +120,17 @@ namespace BinaryTree
                             {
                                 leaf = leaf.right;
                             }
-                            ptr.value = leaf.value;
-                            ptr.key = leaf.key;
-                            if (leaf.parent == ptr)
+                            if (leaf.parent.Key.Equals(ptr.Key))
                             {
+                                ptr.value = leaf.value;
+                                ptr.key = leaf.key;
                                 ptr.left = leaf.left;
                             }
                             else
                             {
-                                leaf.parent.right = leaf.left;
+                                leaf.parent.right = leaf.left; 
+                                ptr.value = leaf.value;
+                                ptr.key = leaf.key;
                             }                            
                         }
                     }
