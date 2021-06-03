@@ -35,7 +35,7 @@ namespace RBTree
                 (right != null && right.color == Color.RED);
         }
     }
-    public class RBTree<TKey, TValue> : System.Collections.Generic.IEnumerable<RBTreeNode<TKey, TValue>> where TKey : IComparable 
+    public class RBTree<TKey, TValue> : System.Collections.Generic.IEnumerable<RBTreeNode<TKey, TValue>> where TKey : IComparable
     {
         public RBTreeNode<TKey, TValue> First
         {
@@ -369,7 +369,7 @@ namespace RBTree
                 node = stack.First.Key;
                 yield return node;
                 node = node.right;
-                stack.Remove(stack.First.Key);                
+                stack.Remove(stack.First.Key);
             }
         }
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

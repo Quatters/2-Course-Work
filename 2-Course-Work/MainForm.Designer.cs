@@ -229,6 +229,7 @@
             // 
             this.StructureTable.AllowUserToAddRows = false;
             this.StructureTable.AllowUserToDeleteRows = false;
+            this.StructureTable.AllowUserToResizeRows = false;
             this.StructureTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.StructureTable.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.StructureTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -273,6 +274,7 @@
             // 
             this.NameGenreTable.AllowUserToAddRows = false;
             this.NameGenreTable.AllowUserToDeleteRows = false;
+            this.NameGenreTable.AllowUserToResizeRows = false;
             this.NameGenreTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.NameGenreTable.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.NameGenreTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -321,6 +323,7 @@
             // 
             this.NameAuthorTable.AllowUserToAddRows = false;
             this.NameAuthorTable.AllowUserToDeleteRows = false;
+            this.NameAuthorTable.AllowUserToResizeRows = false;
             this.NameAuthorTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.NameAuthorTable.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.NameAuthorTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;

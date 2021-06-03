@@ -57,27 +57,15 @@ namespace _2_Course_Work
                 ClearAllStructures();
                 try
                 {
-                    while (!reader.ReadLineAsync().Result.StartsWith("#"));
-                    int iter = 0;
-                    while (!line.StartsWith("#")) // чтение структуры
-                    {
-                        line = CleanString(reader.ReadLine());
-                        if (line.StartsWith("#")) continue;
-                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');                        
-                        index = StructureTable.Rows.Add(cells);
-                        YearTree.Add(int.Parse(cells[4]), StructureTable.Rows[index]);
-                        PublisherTree.Add(cells[3], StructureTable.Rows[index]);
-                        NameTree.Add(cells[0], StructureTable.Rows[index]);
-                        iter++;
-                    } 
-
                     while (!reader.ReadLine().StartsWith("#"));
                     line = reader.ReadLine();
                     while (!line.StartsWith("#")) // чтение название - жанр
-                    {
+                    {                        
                         line = CleanString(line);
                         if (line.StartsWith("#")) continue;
-                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');                        
+                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
+                        foreach (var word in cells) if (HasIncorrectSymbols(word)) throw new FormatException();
+                        if (cells.Length != 2) throw new IndexOutOfRangeException();                        
                         index = NameGenreTable.Rows.Add(cells);
                         NameGenreHT.Add(cells[0], NameGenreTable.Rows[index]);
                         line = reader.ReadLine();
@@ -86,22 +74,54 @@ namespace _2_Course_Work
                     while (!reader.ReadLine().StartsWith("#"));
                     line = reader.ReadLine();
                     while (!line.StartsWith("#")) // чтение название - автор
-                    {
+                    {                        
                         line = CleanString(line);
                         if (line.StartsWith("#")) continue;
-                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');                        
+                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
+                        foreach (var word in cells) if (HasIncorrectSymbols(word)) throw new FormatException();
+                        if (cells.Length != 2) throw new IndexOutOfRangeException();
                         if (NameGenreHT.Contains(cells[0])) structureForm.Name_comboBox.Items.Add(cells[0]);
                         index = NameAuthorTable.Rows.Add(cells);
                         NameAuthorHT.Add(cells[0], NameAuthorTable.Rows[index]);
                         line = reader.ReadLine();
-                    } 
+                    }
+
+                    while (!reader.ReadLine().StartsWith("#"));
+                    line = reader.ReadLine();
+                    while (!line.StartsWith("#")) // чтение структуры
+                    {                        
+                        line = CleanString(line);
+                        if (line.StartsWith("#")) continue;
+                        cells = line.Replace(' ', '%').Replace('_', ' ').Split('%');
+                        foreach (var word in cells) if (HasIncorrectSymbols(word)) throw new FormatException();
+                        if (cells.Length != 5) throw new IndexOutOfRangeException();
+                        if (!NameGenreHT.Contains(cells[0]) || !NameAuthorHT.Contains(cells[0])) throw new ArgumentException();
+                        index = StructureTable.Rows.Add(cells);
+                        YearTree.Add(int.Parse(cells[4]), StructureTable.Rows[index]);
+                        PublisherTree.Add(cells[3], StructureTable.Rows[index]);
+                        NameTree.Add(cells[0], StructureTable.Rows[index]);
+                        line = reader.ReadLine();
+                    }
 
                     reader.Close();
                     saved = true;
                     UpdateInfo("Файл успешно загружен");
-                }                
+                }
+                catch (ArgumentException)
+				{
+                    ClearAllStructures();
+                    UpdateInfo("Файл не загружен. Целостность справочников нарушена");
+                    return;
+                }
+                catch (FormatException)
+				{
+                    ClearAllStructures();
+                    UpdateInfo("Ошибка при чтении файла. Файл содержит недопустимые символы");
+                    return;
+                }
                 catch (Exception)
                 {
+                    ClearAllStructures();
                     UpdateInfo("Ошибка при чтении файла. Файл имеет неверный формат");
                     return;
                 }
@@ -126,14 +146,14 @@ namespace _2_Course_Work
             DialogResult result = saveDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                StreamWriter writer = new StreamWriter(saveDialog.FileName);
-                writer.WriteLine($"# Общая структура");
-                SaveGrid(StructureTable, writer);
-                writer.WriteLine($"# Конец общей структуры\n\n# Справочник название-жанр");
+                StreamWriter writer = new StreamWriter(saveDialog.FileName);                
+                writer.WriteLine($"# Справочник название-жанр");
                 SaveGrid(NameGenreTable, writer);
                 writer.WriteLine($"# Конец справочника\n\n# Справочник название-автор");
                 SaveGrid(NameAuthorTable, writer);
-                writer.WriteLine($"# Конец справочника");
+                writer.WriteLine($"# Конец справочника\n\n# Общая структура");
+                SaveGrid(StructureTable, writer);
+                writer.WriteLine($"# Конец общей структуры");
                 writer.Close();
                 saved = true;
                 UpdateInfo("Файл успешно сохранен");
