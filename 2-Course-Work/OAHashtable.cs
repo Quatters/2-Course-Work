@@ -19,15 +19,13 @@ namespace OAHashtable
         private const double MIN_FULLNESS = 0.15;
         private const int DEFAULT_SIZE = 8;
         private Pair<TKey, TValue>[] hashtable = new Pair<TKey, TValue>[DEFAULT_SIZE];
-        private int size = DEFAULT_SIZE;
-        private int stored = 0;
-        public double Fullness => (double)stored / size;
-        public int Stores => stored;
-        public int CurrentSize => size;
-        public void Clear()
+		public double Fullness => (double)Stores / CurrentSize;
+		public int Stores { get; private set; } = 0;
+		public int CurrentSize { get; private set; } = DEFAULT_SIZE;
+		public void Clear()
         {
-            size = DEFAULT_SIZE;
-            stored = 0;
+            CurrentSize = DEFAULT_SIZE;
+            Stores = 0;
             hashtable = new Pair<TKey, TValue>[DEFAULT_SIZE];    
         }
         protected internal int GetIndex(TKey key)
@@ -58,7 +56,7 @@ namespace OAHashtable
             if (index != -1)
             {
                 hashtable[index].Deleted = true;
-                stored--;
+                Stores--;
                 if (Fullness < MIN_FULLNESS) Reduce();
             }
         }
@@ -68,7 +66,7 @@ namespace OAHashtable
             if (index != -1)
             {
                 hashtable[index].Deleted = true;
-                stored--;
+                Stores--;
                 if (Fullness < MIN_FULLNESS) Reduce();
             }
 
@@ -86,7 +84,7 @@ namespace OAHashtable
             if (hashtable[hash] == null || hashtable[hash].Deleted || !hashtable[hash].Key.Equals(key))
             {
                 hashtable[hash] = new Pair<TKey, TValue>(key, value);
-                stored++;
+                Stores++;
             }            
         }
         public void Add(Pair<TKey, TValue> pair)
@@ -102,7 +100,7 @@ namespace OAHashtable
             if (hashtable[hash] == null || hashtable[hash].Deleted || !hashtable[hash].Key.Equals(pair.Key))
             {
                 hashtable[hash] = pair;
-                stored++;
+                Stores++;
             }            
         }
         private int KeyToInt(TKey key)
@@ -112,8 +110,8 @@ namespace OAHashtable
             foreach (var ch in str) value += ch;
             return value;
         }
-        private int Hash(TKey key, int i) => (H1(key) + i * H2(key)) % size;
-        private int H1(TKey key)
+        protected internal int Hash(TKey key, int i) => (H1(key) + i * H2(key)) % CurrentSize;
+        protected internal int H1(TKey key)
         {
             int intkey = KeyToInt(key);
             int hash = 0;
@@ -122,15 +120,15 @@ namespace OAHashtable
                 hash += intkey % 10;
                 intkey /= 10;
             }
-            return hash % size;
+            return hash % CurrentSize;
         }
-        private int H2(TKey key)
+        protected internal int H2(TKey key)
         {
             int hash = KeyToInt(key);
-            hash %= size;
+            hash %= CurrentSize;
             if (hash % 2 == 0)
             {
-                if (hash + 1 < size) hash++;
+                if (hash + 1 < CurrentSize) hash++;
                 else hash--;
             }
             return hash;
@@ -138,33 +136,33 @@ namespace OAHashtable
         private void Expand()
         {
             var oldtable = hashtable;
-            stored = 0;
-            size *= 2;
-            hashtable = new Pair<TKey, TValue>[size];
+            Stores = 0;
+            CurrentSize *= 2;
+            hashtable = new Pair<TKey, TValue>[CurrentSize];
             foreach (var item in oldtable) if (item != null) Add(item);
         }
         private void Reduce()
         {
-            if (size <= DEFAULT_SIZE) return;
+            if (CurrentSize <= DEFAULT_SIZE) return;
             var oldtable = hashtable;
-            stored = 0;
-            size /= 2;
-            hashtable = new Pair<TKey, TValue>[size];
+            Stores = 0;
+            CurrentSize /= 2;
+            hashtable = new Pair<TKey, TValue>[CurrentSize];
             foreach (var item in oldtable) if (item != null && !item.Deleted) Add(item);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             int i = 0;
-            while (i < size && hashtable[i] == null) i++;
+            while (i < CurrentSize && hashtable[i] == null) i++;
             if (hashtable[i] != null && !hashtable[i].Deleted) yield return hashtable[i];
         }
         System.Collections.Generic.IEnumerator<Pair<TKey, TValue>> System.Collections.Generic.IEnumerable<Pair<TKey, TValue>>.GetEnumerator()
         {
             int i = 0;
-            while (i < size)
+            while (i < CurrentSize)
             {
-                while (i + 1 < size && hashtable[i] == null) i++;
+                while (i + 1 < CurrentSize && hashtable[i] == null) i++;
                 if (hashtable[i] != null && !hashtable[i].Deleted) yield return hashtable[i];
                 i++;
             }

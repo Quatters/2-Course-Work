@@ -358,18 +358,15 @@ namespace RBTree
             if (root == null) yield break;
             DoubleLinkedList<RBTreeNode<TKey, TValue>> stack =
                 new DoubleLinkedList<RBTreeNode<TKey, TValue>>();
-            RBTreeNode<TKey, TValue> node = root;
-            while (node != null || stack.Size > 0)
+            RBTreeNode<TKey, TValue> node;
+            stack.AddFirst(root);
+            while (stack.Size > 0)
             {
-                while (node != null)
-                {
-                    stack.AddFirst(node);
-                    node = node.left;
-                }
                 node = stack.First.Key;
-                yield return node;
-                node = node.right;
                 stack.Remove(stack.First.Key);
+                yield return node;
+                if (node.right != null) stack.AddFirst(node.right);
+                if (node.left != null) stack.AddFirst(node.left);
             }
         }
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -377,18 +374,15 @@ namespace RBTree
             if (root == null) yield break;
             DoubleLinkedList<RBTreeNode<TKey, TValue>> stack =
                 new DoubleLinkedList<RBTreeNode<TKey, TValue>>();
-            RBTreeNode<TKey, TValue> node = root;
-            while (node != null || stack.Size > 0)
+            RBTreeNode<TKey, TValue> node;
+            stack.AddFirst(root);
+            while (stack.Size > 0)
             {
-                while (node != null)
-                {
-                    stack.AddFirst(node);
-                    node = node.left;
-                }
                 node = stack.First.Key;
-                yield return node.Key;
-                node = node.right;
                 stack.Remove(stack.First.Key);
+                yield return node;
+                if (node.right != null) stack.AddFirst(node.right);
+                if (node.left != null) stack.AddFirst(node.left);
             }
         }
     }

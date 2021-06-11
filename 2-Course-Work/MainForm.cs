@@ -600,7 +600,7 @@ namespace _2_Course_Work
                             genre = form.Genre_textBox.Text;
                             if (prevName != name && NameGenreHT.Contains(name))
                             {
-                                MessageBox.Show($"Запись с именем \"{name}\" уже находится в справочнике.",
+                                MessageBox.Show($"Запись с названием \"{name}\" уже находится в справочнике.",
                                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 result = form.ShowDialog();
                                 continue;
@@ -655,7 +655,7 @@ namespace _2_Course_Work
                             author = form.Author_textBox.Text;
                             if (prevName != name && NameAuthorHT.Contains(name))
                             {
-                                MessageBox.Show($"Запись с именем \"{name}\" уже находится в справочнике.",
+                                MessageBox.Show($"Запись с названием \"{name}\" уже находится в справочнике.",
                                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 result = form.ShowDialog();
                                 continue;

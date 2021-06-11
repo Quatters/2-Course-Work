@@ -169,36 +169,34 @@ namespace BinaryTree
 
         System.Collections.Generic.IEnumerator<BinaryTreeNode<TKey, TValue>> System.Collections.Generic.IEnumerable<BinaryTreeNode<TKey, TValue>>.GetEnumerator()
         {
-            DoubleLinkedList<BinaryTreeNode<TKey, TValue>> stack = new DoubleLinkedList<BinaryTreeNode<TKey, TValue>>();
-            BinaryTreeNode<TKey, TValue> ptr = root;
-            while(ptr != null || stack.Size > 0)
+            if (root == null) yield break;
+            DoubleLinkedList<BinaryTreeNode<TKey, TValue>> stack =
+                new DoubleLinkedList<BinaryTreeNode<TKey, TValue>>();
+            BinaryTreeNode<TKey, TValue> node;
+            stack.AddFirst(root);
+            while (stack.Size > 0)
             {
-                while(ptr != null)
-                {
-                    stack.AddFirst(ptr);
-                    ptr = ptr.left;
-                }
-                ptr = stack.First.Key;
-                yield return ptr;
-                ptr = ptr.right;
+                node = stack.First.Key;
                 stack.Remove(stack.First.Key);
+                yield return node;
+                if (node.right != null) stack.AddFirst(node.right);
+                if (node.left != null) stack.AddFirst(node.left);
             }
         }
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            DoubleLinkedList<BinaryTreeNode<TKey, TValue>> stack = new DoubleLinkedList<BinaryTreeNode<TKey, TValue>>();
-            BinaryTreeNode<TKey, TValue> ptr = root;
-            while (ptr != null || stack.Size > 0)
+            if (root == null) yield break;
+            DoubleLinkedList<BinaryTreeNode<TKey, TValue>> stack =
+                new DoubleLinkedList<BinaryTreeNode<TKey, TValue>>();
+            BinaryTreeNode<TKey, TValue> node;
+            stack.AddFirst(root);
+            while (stack.Size > 0)
             {
-                while (ptr != null)
-                {
-                    stack.AddFirst(ptr);
-                    ptr = ptr.left;
-                }
-                ptr = stack.First.Key;
-                yield return ptr.key;
-                ptr = ptr.right;
+                node = stack.First.Key;
                 stack.Remove(stack.First.Key);
+                yield return node;
+                if (node.right != null) stack.AddFirst(node.right);
+                if (node.left != null) stack.AddFirst(node.left);
             }
         }
     }

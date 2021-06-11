@@ -53,36 +53,9 @@ namespace Tests
         }
         static void Main(string[] args)
         {
-            BinaryTree<int, int> tree = new BinaryTree<int, int>();
-            RBTree<int, int> rbtree = new RBTree<int, int>();
-            List<int> list1 = new List<int>();
-            List<int> list2 = new List<int>();
-            int n1, n2;
-            for (int i = 0; i < 10000; i++)
-            {
-                n1 = new Random().Next(0, 10000);
-                n2 = new Random().Next(0, 10000);
-                rbtree.Add(n1, n2);
-                tree.Add(n1, n2);
-                list1.Add(n1);
-                list2.Add(n2);
-            }
-            Console.WriteLine(tree.Root.Key);
-            Console.WriteLine();
-            foreach(var item in tree)
-            {
-                Console.WriteLine(item.Key);
-            }
-            Console.WriteLine();
-            for (int i = 0; i < 10000; i++)
-            {
-                //rbtree.Remove(list1[i], list2[i]);
-                tree.Remove(list1[i], list2[i]);
-            }
-            if (tree.Root != null)
-            {
-                while (true) Console.WriteLine("Есть не удаленные!");
-            }
+            OAHashtable<int, int> table = new OAHashtable<int, int>();
+            table.Add(1, 1);
+            table.Add(10, 10);
         }
     }
 }
