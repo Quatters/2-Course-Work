@@ -53,7 +53,11 @@ namespace _2_Course_Work
         }
         private void Find_button_Click(object sender, EventArgs e)
         {
-            DoubleLinkedList<DataGridViewRow> foundYears = GetYearRows((int)fromYear_numeric.Value, (int)toYear_numeric.Value);
+            int fromYear = mainForm.YearTree.First.Key;
+            int toYear = mainForm.YearTree.Last.Key;
+            if ((int)fromYear_numeric.Value > fromYear) fromYear = (int)fromYear_numeric.Value;
+            if ((int)toYear_numeric.Value < toYear) toYear = (int)toYear_numeric.Value;
+            DoubleLinkedList<DataGridViewRow> foundYears = GetYearRows(fromYear, toYear);
             DoubleLinkedList<DataGridViewRow> foundPublishers = GetPublisherRows(publisher_textBox.Text);
             DoubleLinkedList<DataGridViewRow> foundNames = GetNameRows(name_textBox.Text);
             mainForm.StructureTable.Rows.Clear();
@@ -140,7 +144,7 @@ namespace _2_Course_Work
         private DoubleLinkedList<DataGridViewRow> GetYearRows(int from, int to)
         {
             DoubleLinkedList<DataGridViewRow> result = new DoubleLinkedList<DataGridViewRow>();
-            DoubleLinkedList<DataGridViewRow> currentList = new DoubleLinkedList<DataGridViewRow>();
+            DoubleLinkedList<DataGridViewRow> currentList;
             for (int i = from; i <= to; i++)
             {
                 currentList = mainForm.YearTree.GetValues(i);
