@@ -16,6 +16,7 @@
     {
         public DoubleLinkedListNode<T> First { get; private set; } = null;
         public DoubleLinkedListNode<T> Last { get; private set; } = null;
+        public int Comparisons { get; set; } = 0;
         public int Size { get; private set; } = 0;
         public void AddFirst(T key)
         {

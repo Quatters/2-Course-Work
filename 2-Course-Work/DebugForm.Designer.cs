@@ -35,6 +35,7 @@
 			this.PublisherTree_radio = new System.Windows.Forms.RadioButton();
 			this.showButton = new System.Windows.Forms.Button();
 			this.NameTree_radio = new System.Windows.Forms.RadioButton();
+			this.searchInfo = new System.Windows.Forms.RadioButton();
 			this.SuspendLayout();
 			// 
 			// DebugTextBox
@@ -110,7 +111,7 @@
 			this.showButton.TabIndex = 0;
 			this.showButton.Text = "Обновить";
 			this.showButton.UseVisualStyleBackColor = true;
-			this.showButton.Click += new System.EventHandler(this.showButton_Click);
+			this.showButton.Click += new System.EventHandler(this.updateButton_Click);
 			// 
 			// NameTree_radio
 			// 
@@ -124,11 +125,24 @@
 			this.NameTree_radio.UseVisualStyleBackColor = true;
 			this.NameTree_radio.CheckedChanged += new System.EventHandler(this.NameTree_radio_CheckedChanged);
 			// 
+			// searchInfo
+			// 
+			this.searchInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.searchInfo.AutoSize = true;
+			this.searchInfo.Location = new System.Drawing.Point(253, 519);
+			this.searchInfo.Name = "searchInfo";
+			this.searchInfo.Size = new System.Drawing.Size(177, 21);
+			this.searchInfo.TabIndex = 6;
+			this.searchInfo.Text = "Информация о поиске";
+			this.searchInfo.UseVisualStyleBackColor = true;
+			this.searchInfo.CheckedChanged += new System.EventHandler(this.searchInfo_CheckedChanged);
+			// 
 			// DebugForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(472, 561);
+			this.Controls.Add(this.searchInfo);
 			this.Controls.Add(this.NameTree_radio);
 			this.Controls.Add(this.showButton);
 			this.Controls.Add(this.PublisherTree_radio);
@@ -155,5 +169,6 @@
         private System.Windows.Forms.RadioButton PublisherTree_radio;
         private System.Windows.Forms.Button showButton;
         private System.Windows.Forms.RadioButton NameTree_radio;
-    }
+		private System.Windows.Forms.RadioButton searchInfo;
+	}
 }

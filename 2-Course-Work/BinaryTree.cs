@@ -24,6 +24,7 @@ namespace BinaryTree
     {
         private BinaryTreeNode<TKey, TValue> root = null;
         public BinaryTreeNode<TKey, TValue> Root => root;
+        public int Comparisons { get; set; } = 0;
         public void Add(TKey key, TValue value) => Add(ref root, key, value);
         private void Add(ref BinaryTreeNode<TKey, TValue> ptr, TKey key, TValue value)
         {
@@ -149,13 +150,15 @@ namespace BinaryTree
             }
             else
             {
+                Comparisons++;
                 if (ptr.key.Equals(key))
                 {
                     return ptr;
                 }
                 else
                 {
-                    if(ptr.key.CompareTo(key) == -1)
+                    Comparisons++;
+                    if (ptr.key.CompareTo(key) == -1)
                     {
                         return (Find(ref ptr.right, key));
                     }

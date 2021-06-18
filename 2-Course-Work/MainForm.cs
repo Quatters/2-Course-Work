@@ -677,7 +677,7 @@ namespace _2_Course_Work
         {
             if (findFormShown) return;
             if (tabControl.SelectedIndex == 0)
-            {                
+            {
                 StructureFindForm form = new StructureFindForm();
                 form.Owner = this;
                 form.Show();

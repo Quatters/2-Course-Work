@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="_2_Course_Work.DebugForm" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAKAAAAAQCAAACAAAlSAAAICCCIAgQAghAIAAABAAEA=</HashCode>
+      <FileName>DebugForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_2_Course_Work.MainForm" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BFBEISqBVHQDJAiCiCKAgQECGAIiDhhIRAoAYCDEBBA=</HashCode>
+      <FileName>MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_2_Course_Work.NameAuthorForm" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAACAAABAAIQCAAAACAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NameAuthorForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_2_Course_Work.NameFindForm" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAJAAAAAACAgAIBgCgCAAAACAAAAAAAAAAAAIAEAAAA=</HashCode>
+      <FileName>NameFindForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_2_Course_Work.NameGenreForm" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAACAAABQAIQCAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NameGenreForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_2_Course_Work.Program" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_2_Course_Work.StructureFindForm" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEJAAAgAACQgApBgAgCYAAACAAAgAAAIEAAEKAACAAA=</HashCode>
+      <FileName>StructureFindForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_2_Course_Work.StructureForm" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAACAAABQAAQKAAAACAAJAAAEAAAAIAAAAASA=</HashCode>
+      <FileName>StructureForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_2_Course_Work.Properties.Resources" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="_2_Course_Work.Properties.Settings" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAgQAAAAAAAIoAAAAABACAAAAIAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BinaryTree.BinaryTreeNode&lt;TKey, TValue&gt;" Collapsed="true">
+    <Position X="2.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAARAAAAEAAAAAAAIACAAAAAgAAAAgAA=</HashCode>
+      <FileName>BinaryTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BinaryTree.BinaryTree&lt;TKey, TValue&gt;" Collapsed="true">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAIAAAACAAAAAgBAAAAAAIAAAAAAAAAABAAAA=</HashCode>
+      <FileName>BinaryTree.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChainHashtable.Pair&lt;TKey, TValue&gt;" Collapsed="true">
+    <Position X="2.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ChainHashtable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChainHashtable.ChainHashtable&lt;TKey, TValue&gt;" Collapsed="true">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIJAAAAYAIAgAAAAAAAAAAAAAEAAAAIAAAAAABQAAA=</HashCode>
+      <FileName>ChainHashtable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DoubleLinkedList.DoubleLinkedListNode&lt;T&gt;" Collapsed="true">
+    <Position X="2.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>DoubleLinkedList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DoubleLinkedList.DoubleLinkedList&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAABAAAAAAgQAAAAAAJAAAEEAAAAAAAAACAABQAAA=</HashCode>
+      <FileName>DoubleLinkedList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OAHashtable.Pair&lt;TKey, TValue&gt;" Collapsed="true">
+    <Position X="5.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAEAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>OAHashtable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OAHashtable.OAHashtable&lt;TKey, TValue&gt;" Collapsed="true">
+    <Position X="4" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AaIJAAAgIAIAAAAQAAAAAAEAACEgggAIAAAAAYBQAAA=</HashCode>
+      <FileName>OAHashtable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RBTree.RBTreeNode&lt;TKey, TValue&gt;" Collapsed="true">
+    <Position X="5.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAARAAAQGAAAAAAAYAACAAAAgAAAAgAA=</HashCode>
+      <FileName>RBTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RBTree.RBTree&lt;TKey, TValue&gt;" Collapsed="true">
+    <Position X="4" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAIAAAASAAAAQkBAAAEAAIAAAAAAASAAFRACA=</HashCode>
+      <FileName>RBTree.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -17,7 +17,7 @@ namespace ChainHashtable
     {               
         private DoubleLinkedList<Pair<TKey, TValue>>[] hashtable;
         public int Size { get; private set; }
-
+        public int Comparisons { get; set; } = 0;
         public ChainHashtable(int size = 10)
         {
             this.Size = size;
@@ -54,10 +54,26 @@ namespace ChainHashtable
         public TValue GetValue(TKey key)
         {
             int index = FindElem(key);
-            if ( index != -1)
+            if (index != -1)
             {
                 foreach (var pair in hashtable[index])
                 {
+                    if (pair.Key.Key.Equals(key))
+                    {
+                        return pair.Key.Value;
+                    }
+                }
+            }
+            return default;
+        }
+        public TValue GetValueWithComparisons(TKey key)
+        {
+            int index = FindElem(key);
+            if (index != -1)
+            {
+                foreach (var pair in hashtable[index])
+                {
+                    Comparisons++;
                     if (pair.Key.Key.Equals(key))
                     {
                         return pair.Key.Value;

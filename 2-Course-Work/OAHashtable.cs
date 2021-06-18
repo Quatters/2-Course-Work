@@ -18,6 +18,7 @@ namespace OAHashtable
         private const double MAX_FULLNESS = 0.6;
         private const double MIN_FULLNESS = 0.15;
         private const int DEFAULT_SIZE = 8;
+        public int Comparisons { get; set; } = 0;
         private Pair<TKey, TValue>[] hashtable = new Pair<TKey, TValue>[DEFAULT_SIZE];
 		public double Fullness => (double)Stores / CurrentSize;
 		public int Stores { get; private set; } = 0;
@@ -39,10 +40,27 @@ namespace OAHashtable
             }
             return hashtable[hash] != null && !hashtable[hash].Deleted ? hash : -1;
         }
+        protected internal int GetIndexWithComparisons(TKey key)
+        {
+            int i = 0;
+            int hash = Hash(key, i);
+            while (hashtable[hash] != null && !hashtable[hash].Key.Equals(key))
+            {
+                i++;
+                hash = Hash(key, i);
+            }
+            Comparisons = i + 1;
+            return hashtable[hash] != null && !hashtable[hash].Deleted ? hash : -1;
+        }
         public bool Contains(TKey key) => GetIndex(key) != -1;
         public TValue GetValue(TKey key)
         {
             int index = GetIndex(key);
+            return index != -1 ? hashtable[index].Value : default;
+        }
+        public TValue GetValueWithComparisons(TKey key)
+        {
+            int index = GetIndexWithComparisons(key);
             return index != -1 ? hashtable[index].Value : default;
         }
         public Pair<TKey, TValue> GetPair(TKey key)

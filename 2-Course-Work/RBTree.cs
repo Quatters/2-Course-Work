@@ -37,6 +37,7 @@ namespace RBTree
     }
     public class RBTree<TKey, TValue> : System.Collections.Generic.IEnumerable<RBTreeNode<TKey, TValue>> where TKey : IComparable
     {
+        public int Comparisons { get; set; } = 0;
         public RBTreeNode<TKey, TValue> First
         {
             get
@@ -319,9 +320,11 @@ namespace RBTree
             RBTreeNode<TKey, TValue> ptr = root;
             while (ptr != null)
             {
+                Comparisons++;
                 if (ptr.key.Equals(key)) return ptr;
                 else if (ptr.key.CompareTo(key) == -1) ptr = ptr.right;
                 else ptr = ptr.left;
+                Comparisons++;
             }
             return null;
         }

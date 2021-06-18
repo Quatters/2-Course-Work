@@ -5,7 +5,7 @@ namespace _2_Course_Work
 {
     public partial class DebugForm : Form
     {
-        MainForm mainForm;
+        private MainForm mainForm;
         public DebugForm()
         {
             InitializeComponent();
@@ -21,9 +21,9 @@ namespace _2_Course_Work
             mainForm = (MainForm)Owner;
 			ShowNameGenreHT();
         }
-        private void showButton_Click(object sender, EventArgs e)
-        {
-            if (NameGenreHT_radio.Checked)
+        private void updateButton_Click(object sender, EventArgs e)
+        {			
+			if (NameGenreHT_radio.Checked)
 			{
 				ShowNameGenreHT();
 			}
@@ -43,6 +43,21 @@ namespace _2_Course_Work
 			{
 				ShowNameTree();
 			}
+			else if (searchInfo.Checked)
+			{
+				ShowSearchInfo();
+			}
+		}
+		private void ShowSearchInfo()
+		{
+			Clear();
+			DebugTextBox.Text += $"Количество сравнений в последнем поиске\n\n";
+			DebugTextBox.Text += $"Дерево годов (красно-черное): {mainForm.YearTree.Comparisons}\n";
+			DebugTextBox.Text += $"Дерево названий (красно-черное): {mainForm.NameTree.Comparisons}\n";
+			DebugTextBox.Text += $"Дерево издательств (несбалансированное): {mainForm.PublisherTree.Comparisons}\n";
+			DebugTextBox.Text += $"Хеш-таблица название-жанр (открытая адресация): {mainForm.NameGenreHT.Comparisons}\n";
+			DebugTextBox.Text += $"Хеш-таблица название-автор (цепочки; сравнения в списке): {mainForm.NameAuthorHT.Comparisons}\n";
+
 		}
 		private void ShowNameTree()
 		{
@@ -155,6 +170,10 @@ namespace _2_Course_Work
 		private void NameTree_radio_CheckedChanged(object sender, EventArgs e)
 		{
 			ShowNameTree();
+		}
+		private void searchInfo_CheckedChanged(object sender, EventArgs e)
+		{
+			ShowSearchInfo();
 		}
 	}
 }

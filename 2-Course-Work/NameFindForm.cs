@@ -17,15 +17,18 @@ namespace _2_Course_Work
         }
         private void Find_button_Click(object sender, EventArgs e)
         {
+            DataGridViewRow row = null;
+            mainForm.NameGenreHT.Comparisons = 0;
+            mainForm.NameAuthorHT.Comparisons = 0;
             if (table == mainForm.NameGenreTable)
-            {
-                var row = mainForm.NameGenreHT.GetValue(name_textBox.Text);
+            {                
+                if (name_textBox.Text != "") row = mainForm.NameGenreHT.GetValueWithComparisons(name_textBox.Text);
                 table.Rows.Clear();
                 if (row != null) mainForm.NameGenreTable.Rows.Add(row);
             }
             else if (table == mainForm.NameAuthorTable)
-            {
-                var row = mainForm.NameAuthorHT.GetValue(name_textBox.Text);
+            {                
+                if (name_textBox.Text != "") row = mainForm.NameAuthorHT.GetValueWithComparisons(name_textBox.Text);
                 table.Rows.Clear();
                 if (row != null) mainForm.NameAuthorTable.Rows.Add(row);
             }

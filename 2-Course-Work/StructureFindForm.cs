@@ -53,16 +53,28 @@ namespace _2_Course_Work
         }
         private void Find_button_Click(object sender, EventArgs e)
         {
-            int fromYear = mainForm.YearTree.First.Key;
-            int toYear = mainForm.YearTree.Last.Key;
+            int? fromYear = null;
+            int? toYear = null;
+            if (mainForm.YearTree.First != null)
+            {
+                fromYear = mainForm.YearTree.First.Key;
+                toYear = mainForm.YearTree.Last.Key;
+            }
+            else return;
             if ((int)fromYear_numeric.Value > fromYear) fromYear = (int)fromYear_numeric.Value;
             if ((int)toYear_numeric.Value < toYear) toYear = (int)toYear_numeric.Value;
-            DoubleLinkedList<DataGridViewRow> foundYears = GetYearRows(fromYear, toYear);
-            DoubleLinkedList<DataGridViewRow> foundPublishers = GetPublisherRows(publisher_textBox.Text);
-            DoubleLinkedList<DataGridViewRow> foundNames = GetNameRows(name_textBox.Text);
+            DoubleLinkedList<DataGridViewRow> foundYears;
+            DoubleLinkedList<DataGridViewRow> foundPublishers;
+            DoubleLinkedList<DataGridViewRow> foundNames;
             mainForm.StructureTable.Rows.Clear();
-            if (byName_checkBox.Checked && byYears_checkbox.Checked && byPublisher_checkbox.Checked)
+            mainForm.YearTree.Comparisons = 0;
+            mainForm.NameTree.Comparisons = 0;
+            mainForm.PublisherTree.Comparisons = 0;
+            if (byName_checkBox.Checked && byYears_checkbox.Checked && byPublisher_checkbox.Checked && name_textBox.Text != "" && publisher_textBox.Text != "")
             {
+                foundYears = GetYearRows(fromYear.Value, toYear.Value);
+                foundPublishers = GetPublisherRows(publisher_textBox.Text);
+                foundNames = GetNameRows(name_textBox.Text);
                 foreach (var row in foundYears)
                 {
                     if (foundNames.Contains(row.Key) && foundPublishers.Contains(row.Key))
@@ -71,8 +83,10 @@ namespace _2_Course_Work
                     }
                 }
             }
-            else if (byName_checkBox.Checked && byPublisher_checkbox.Checked)
+            else if (byName_checkBox.Checked && byPublisher_checkbox.Checked && name_textBox.Text != "" && publisher_textBox.Text != "")
             {
+                foundPublishers = GetPublisherRows(publisher_textBox.Text);
+                foundNames = GetNameRows(name_textBox.Text);
                 foreach (var row in foundNames)
                 {
                     if (foundPublishers.Contains(row.Key))
@@ -81,8 +95,10 @@ namespace _2_Course_Work
                     }
                 }
             }
-            else if (byName_checkBox.Checked && byYears_checkbox.Checked)
+            else if (byName_checkBox.Checked && byYears_checkbox.Checked && name_textBox.Text != "")
             {
+                foundYears = GetYearRows(fromYear.Value, toYear.Value);
+                foundNames = GetNameRows(name_textBox.Text);
                 foreach (var row in foundYears)
                 {
                     if (foundNames.Contains(row.Key))
@@ -91,8 +107,10 @@ namespace _2_Course_Work
                     }
                 }
             }
-            else if (byPublisher_checkbox.Checked && byYears_checkbox.Checked)
+            else if (byPublisher_checkbox.Checked && byYears_checkbox.Checked && publisher_textBox.Text != "")
             {
+                foundYears = GetYearRows(fromYear.Value, toYear.Value);
+                foundPublishers = GetPublisherRows(publisher_textBox.Text);
                 foreach (var row in foundYears)
                 {
                     if (foundPublishers.Contains(row.Key))
@@ -101,16 +119,19 @@ namespace _2_Course_Work
                     }
                 }
             }
-            else if (byName_checkBox.Checked)
+            else if (byName_checkBox.Checked && name_textBox.Text != "")
             {
+                foundNames = GetNameRows(name_textBox.Text);
                 foreach (var row in foundNames) mainForm.StructureTable.Rows.Add(row.Key);
             }
-            else if (byPublisher_checkbox.Checked)
+            else if (byPublisher_checkbox.Checked && publisher_textBox.Text != "")
             {
+                foundPublishers = GetPublisherRows(publisher_textBox.Text);
                 foreach (var row in foundPublishers) mainForm.StructureTable.Rows.Add(row.Key);
             }
-            else
+            else if (byYears_checkbox.Checked)
             {
+                foundYears = GetYearRows(fromYear.Value, toYear.Value);
                 foreach (var row in foundYears) mainForm.StructureTable.Rows.Add(row.Key);
             }
         }
